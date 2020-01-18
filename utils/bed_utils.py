@@ -17,9 +17,16 @@ GenRange = {1: 248e6, 2: 242e6, 3: 198e6, 4: 190e6,
 
 def load_bed_file(directory):
     beds = (PROCESSED_DIR / directory).glob('*.bed')
+    if len(beds) > 1:
+        raise ValueError("Multiple bedfiles found.")
     bed = pd.read_csv(beds[0], sep='\t', header=None,
-                      names=['chr', 'pos', 'pos1', 'rs'])
+                      names=['chr', 'pos', 'pos_end', 'rs'])
     return bed
+
+
+def save_bed_file(project):
+    bedfile.to_csv(PROCESSED_DIR / f'{project}/{project}.bed',
+                   sep='\t', index=False, header=False)
 
 
 def get_bed_from_mpra(data):
@@ -31,12 +38,12 @@ def get_bed_from_mpra(data):
     bed = data[['chr', 'pos', 'rs']].copy()
 
     bed['chr'] = bed['chr'].map(lambda x: 'chr{0}'.format(x))
-    bed['pos1'] = bed['pos'] + 1
-    bed = bed[['chr', 'pos', 'pos1', 'rs']]
+    bed['pos_end'] = bed['pos'] + 1
+    bed = bed[['chr', 'pos', 'pos_end', 'rs']]
     return bed
 
 
-def bed_query_format(bed):
+# def bed_query_format(bed):
 
 
 

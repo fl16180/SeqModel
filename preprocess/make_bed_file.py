@@ -25,6 +25,5 @@ if __name__ == '__main__':
     parser.add_argument('--project', '-p', choices=PROJ_CHOICES)
     args = parser.parse_args()
 
-    bedfile = get_bed_from_mpra('E116')
-    bedfile.to_csv(PROCESSED_DIR / 'mpra_e116' / 'bedfile.bed',
-                sep='\t', index=False, header=False)
+    bedfile = get_bed_from_mpra('e116')
+

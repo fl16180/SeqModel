@@ -38,6 +38,7 @@ target/
 
 # pyenv
 .python-version
+venv/
 
 # workspace
 flws.code-workspace

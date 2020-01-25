@@ -2,7 +2,9 @@ import os
 import pandas as pd
 import numpy as np
 import io, subprocess
-from sklearn.utils import resample
+from tqdm import tqdm
+# from shutil import copyfile
+# from sklearn.utils import resample
 
 from constants import *
 
@@ -12,7 +14,10 @@ def _read_bed(x, **kwargs):
     return pd.read_csv(x, sep=r'\s+', header=None, index_col=False, **kwargs)
 
 
-def extract_eigen_data(bedfile, outfile):
+def extract_eigen(bedfile, outpath):
+    if os.path.exists(outpath):
+        os.remove(outpath)
+
     head_file = EIGEN_DIR / 'header_noncoding.txt'
     with open(head_file, 'r') as f:
         header = f.read()
@@ -20,62 +25,77 @@ def extract_eigen_data(bedfile, outfile):
 
     command = f'tabix {EIGEN_DIR}/{EIGEN_BASE} '
 
-    with open(outfile, 'w') as fp:
-        fp.write('\t'.join(header))
+    with open(outpath, 'w') as fp:
+        fp.write('\t'.join(header) + '\n')
 
-        for row in bedfile.itertuples():
+        for row in tqdm(bedfile.itertuples()):
             args = f'{row.chr}:{row.pos}-{row.pos}'
             full_cmd = command.replace('XX', str(row.chr)) + args
 
             p = subprocess.Popen(full_cmd, shell=True, stdout=subprocess.PIPE)
             stdout, _ = p.communicate()
 
-            features = _read_bed(io.StringIO(stdout.decode('utf-8'))).set_index(0)
-            features = features.astype(str).values.tolist()
-            for row in features:
-                fp.write('\t'.join(row))
+            if len(stdout) > 0:
+                features = _read_bed(io.StringIO(stdout.decode('utf-8')))
+                features = features.astype(str).values.tolist()
+                for row in features:
+                    fp.write('\t'.join(row) + '\n')
 
 
-def extract_regbase(bedfile, outfile):
+def extract_regbase(bedfile, outpath):
     """ Extract rows from regBase file corresponding to variants in
     input bedfile. Command line piping adapted from
     https://github.com/mulinlab/regBase/blob/master/script/regBase_predict.py
 
     """
+    if os.path.exists(outpath):
+        os.remove(outpath)
+
     head_file = REGBASE_DIR / REGBASE
     header = pd.read_csv(head_file, sep=r'\s+', nrows=3).columns
     header = header.values.tolist()
 
     command = f'tabix {REGBASE_DIR}/{REGBASE} '
 
-    with open(outfile, 'w') as fp:
-        fp.write('\t'.join(header))
+    with open(outpath, 'w') as fp:
+        fp.write('\t'.join(header) + '\n')
 
-        for row in bedfile.itertuples():
+        for row in tqdm(bedfile.itertuples()):
             args = f'{row.chr}:{row.pos}-{row.pos}'
             full_cmd = command + args
 
             p = subprocess.Popen(full_cmd, shell=True, stdout=subprocess.PIPE)
             stdout, _ = p.communicate()
 
-            features = _read_bed(io.StringIO(stdout.decode('utf-8'))).set_index(0)
-            features = features.astype(str).values.tolist()
-            for row in features:
-                fp.write('\t'.join(row))
+            if len(stdout) > 0:
+                features = _read_bed(io.StringIO(stdout.decode('utf-8')))
+                features = features.astype(str).values.tolist()
+                for row in features:
+                    fp.write('\t'.join(row) + '\n')
+
+
+def extract_roadmap(bedfile, outpath, project):
+    if os.path.exists(outpath):
+        os.remove(outpath)
+
+    if project == 'mpra_e116':
+        data = load_mpra_data(project)
+        data.drop(['rs', 'Label'], axis=1, inplace=True)
+        data.to_csv(outpath, sep='\t', index=False)
 
 
 def load_mpra_data(dataset, benchmarks=False):
     ''' processes raw MPRA data files and optionally benchmark files '''
     mpra_files = MPRA_TABLE[dataset]
-    data = pd.read_csv(MPRA_DIR / mpra_files[0]), delimiter="\t")
+    data = pd.read_csv(MPRA_DIR / mpra_files[0], sep='\t')
 
     ### setup mpra/epigenetic data ###
     data_prepared = (data.assign(chr=data['chr'].apply( lambda x: int(x[3:]) ))
-                         .sort_values(['chr','pos'])
+                         .sort_values(['chr', 'pos'])
                          .reset_index(drop=True))
 
     if benchmarks:
-        bench = pd.read_csv(MPRA_DIR / mpra_files[1]), delimiter="\t")
+        bench = pd.read_csv(MPRA_DIR / mpra_files[1], sep='\t')
 
         ### setup benchmark data ###
         # modify index column to extract chr and pos information
@@ -90,11 +110,11 @@ def load_mpra_data(dataset, benchmarks=False):
                             .assign(chr=chr_pos[0])
                             .assign(pos=chr_pos[1])
                             .drop('index', axis=1)
-                            .sort_values(['chr','pos'])
+                            .sort_values(['chr', 'pos'])
                             .reset_index(drop=True))
 
         # put chr and pos columns in front for readability
-        reordered_columns = ['chr','pos'] + bench_prepared.columns.values.tolist()[:-2]
+        reordered_columns = ['chr', 'pos'] + bench_prepared.columns.values.tolist()[:-2]
         bench_prepared = bench_prepared[reordered_columns]
         return data_prepared, bench_prepared
 

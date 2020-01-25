@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-# from pathlib import Path
 from utils.data_utils import load_mpra_data
 from constants import *
 
@@ -16,7 +15,7 @@ GenRange = {1: 248e6, 2: 242e6, 3: 198e6, 4: 190e6,
 
 
 def load_bed_file(directory):
-    beds = (PROCESSED_DIR / directory).glob('*.bed')
+    beds = list((PROCESSED_DIR / directory).glob('*.bed'))
     if len(beds) > 1:
         raise ValueError("Multiple bedfiles found.")
     bed = pd.read_csv(beds[0], sep='\t', header=None,
@@ -24,12 +23,12 @@ def load_bed_file(directory):
     return bed
 
 
-def save_bed_file(project):
+def save_bed_file(bedfile, project):
     bedfile.to_csv(PROCESSED_DIR / f'{project}/{project}.bed',
                    sep='\t', index=False, header=False)
 
 
-def get_bed_from_mpra(data):
+def get_bed_from_mpra(dataset):
     """ The raw MPRA data files contain non-coding variant locations already
     merged with ROADMAP epigenetic data. This function extracts the variant
     locations and converts to bedfile format.
@@ -37,14 +36,10 @@ def get_bed_from_mpra(data):
     data = load_mpra_data(dataset)
     bed = data[['chr', 'pos', 'rs']].copy()
 
-    bed['chr'] = bed['chr'].map(lambda x: 'chr{0}'.format(x))
+    # bed['chr'] = bed['chr'].map(lambda x: 'chr{0}'.format(x))
     bed['pos_end'] = bed['pos'] + 1
     bed = bed[['chr', 'pos', 'pos_end', 'rs']]
     return bed
-
-
-# def bed_query_format(bed):
-
 
 
 def get_random_bed(data_dir, n_samples=200000):

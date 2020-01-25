@@ -14,22 +14,15 @@ REGBASE = 'regBase_V1.1.gz'
 EIGEN_BASE = 'Eigen_hg19_noncoding_annot_chrXX.tab.bgz'
 
 MPRA_TABLE = {
-    'e116': ('LabelData_CellPaperE116.txt', 'TestData_MPRA_E116_unbalanced.txt'),
-    'e118': ('LabelData_KellisE118.txt', 'TestData_MPRA_E118.txt'),
-    'e123': ('LabelData_KellisE123.txt', 'TestData_MPRA_E123.txt'),
-    'DESeq2': ('1KG_bartender_novaSeq_DESeq2_pvals.txt', '')
+    'mpra_e116': ('LabelData_CellPaperE116.txt', 'TestData_MPRA_E116_unbalanced.txt'),
+    'mpra_e118': ('LabelData_KellisE118.txt', 'TestData_MPRA_E118.txt'),
+    'mpra_e123': ('LabelData_KellisE123.txt', 'TestData_MPRA_E123.txt'),
+    'mpra_deseq2': ('1KG_bartender_novaSeq_DESeq2_pvals.txt', '')
 }
 
 ROADMAP_TABLE = {
-    'E116': 'LabelData_CellPaperE116.txt',
-    'E118': 'LabelData_KellisE118.txt',
-    'E123': 'LabelData_KellisE123.txt',
-    'DESeq2': None
+    'mpra_e116': 'LabelData_CellPaperE116.txt',
+    'mpra_e118': 'LabelData_KellisE118.txt',
+    'mpra_e123': 'LabelData_KellisE123.txt',
+    'mpra_deseq2': None
 }
-
-EIGEN_TABLE = {}
-
-BBANK_TABLE = {}
-
-REGBASE_TABLE = {}
-

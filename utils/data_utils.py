@@ -84,6 +84,34 @@ def extract_roadmap(bedfile, outpath, project):
         data.to_csv(outpath, sep='\t', index=False)
 
 
+def clean_eigen_data(filename):
+    eigen = pd.read_csv(filename, sep='\t', na_values='.')
+
+    # manually convert scores to float due to NaN processing
+    eigen.iloc[:, 4:] = eigen.iloc[:, 4:].astype(float)
+
+    # average over variant substitutions
+    eigen = eigen.rename(columns={'chr': 'chr', 'position': 'pos'}) \
+                    .drop('alt', axis=1) \
+                    .groupby(['chr', 'pos', 'ref'], as_index=False) \
+                    .mean()
+    return eigen
+
+
+def clean_regbase_data(filename):
+    regbase = pd.read_csv(filename, sep='\t', na_values='.')
+
+    # manually convert scores to float due to NaN processing
+    regbase.iloc[:, 5:] = regbase.iloc[:, 5:].astype(float)
+
+    # average over variant substitutions
+    regbase = regbase.rename(columns={'#Chrom': 'chr', 'Pos_end': 'pos', 'Ref': 'ref'}) \
+                        .drop(['Pos_start', 'Alts'], axis=1) \
+                        .groupby(['chr', 'pos', 'ref'], as_index=False) \
+                        .mean()
+    return regbase
+
+
 def load_mpra_data(dataset, benchmarks=False):
     ''' processes raw MPRA data files and optionally benchmark files '''
     mpra_files = MPRA_TABLE[dataset]

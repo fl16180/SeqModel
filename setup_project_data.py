@@ -2,7 +2,7 @@ import argparse
 import os
 import pandas as pd
 from utils.bed_utils import get_bed_from_mpra, load_bed_file, save_bed_file
-from utils.data_utils import extract_roadmap, extract_eigen, extract_regbase, split_train_test, load_mpra_data
+from utils.data_utils import *
 from constants import PROCESSED_DIR
 
 
@@ -53,22 +53,14 @@ def setup(args):
 
         if os.path.exists(project_dir / 'roadmap_extract.tsv'):
             roadmap = pd.read_csv(project_dir / 'roadmap_extract.tsv', sep='\t')
+
             r_train = pd.merge(roadmap, bed_train[['chr', 'pos']], on=['chr', 'pos'])
             r_train.to_csv(project_dir / 'train_roadmap.csv', sep=',', index=False)
             r_test = pd.merge(roadmap, bed_test[['chr', 'pos']], on=['chr', 'pos'])
             r_test.to_csv(project_dir / 'test_roadmap.csv', sep=',', index=False)
 
         if os.path.exists(project_dir / 'regBase_extract.tsv'):
-            regbase = pd.read_csv(project_dir / 'regBase_extract.tsv', sep='\t', na_values='.')
-
-            # manually convert scores to float due to NaN processing
-            regbase.iloc[:, 5:] = regbase.iloc[:, 5:].astype(float)
-
-            # average over variant substitutions
-            regbase = regbase.rename(columns={'#Chrom': 'chr', 'Pos_end': 'pos', 'Ref': 'ref'}) \
-                             .drop(['Pos_start', 'Alts'], axis=1) \
-                             .groupby(['chr', 'pos', 'ref'], as_index=False) \
-                             .mean()
+            regbase = clean_regbase_data(project_dir / 'regBase_extract.tsv')
 
             r_train = pd.merge(regbase, bed_train[['chr', 'pos']])
             r_train.to_csv(project_dir / 'train_regbase.csv', index=False)
@@ -76,16 +68,7 @@ def setup(args):
             r_test.to_csv(project_dir / 'test_regbase.csv', index=False)
 
         if os.path.exists(project_dir / 'eigen_extract.tsv'):
-            eigen = pd.read_csv(project_dir / 'eigen_extract.tsv', sep='\t', na_values='.')
-
-            # manually convert scores to float due to NaN processing
-            eigen.iloc[:, 4:] = eigen.iloc[:, 4:].astype(float)
-
-            # average over variant substitutions
-            eigen = eigen.rename(columns={'chr': 'chr', 'position': 'pos'}) \
-                         .drop('alt', axis=1) \
-                         .groupby(['chr', 'pos', 'ref'], as_index=False) \
-                         .mean()
+            eigen = clean_eigen_data(project_dir / 'eigen_extract.tsv')
 
             e_train = pd.merge(eigen, bed_train[['chr', 'pos']])
             e_train.to_csv(project_dir / 'train_eigen.csv', index=False)

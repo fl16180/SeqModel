@@ -83,6 +83,9 @@ def extract_roadmap(bedfile, outpath, project):
         data.drop(['rs', 'Label'], axis=1, inplace=True)
         data.to_csv(outpath, sep='\t', index=False)
 
+    if project == 'mpra_deseq2':
+        data = load_mpra_data(project)
+
 
 def clean_eigen_data(filename):
     eigen = pd.read_csv(filename, sep='\t', na_values='.')
@@ -117,12 +120,19 @@ def load_mpra_data(dataset, benchmarks=False):
     mpra_files = MPRA_TABLE[dataset]
     data = pd.read_csv(MPRA_DIR / mpra_files[0], sep='\t')
 
+    if dataset == 'mpra_deseq2':
+        data.rename(columns={'chrom': 'chr'}, inplace=True)
+        data['rs'] = ''
+
     ### setup mpra/epigenetic data ###
     data_prepared = (data.assign(chr=data['chr'].apply( lambda x: int(x[3:]) ))
                          .sort_values(['chr', 'pos'])
                          .reset_index(drop=True))
 
     if benchmarks:
+        if not mpra_files[1]:
+            return data_prepared, None
+
         bench = pd.read_csv(MPRA_DIR / mpra_files[1], sep='\t')
 
         ### setup benchmark data ###

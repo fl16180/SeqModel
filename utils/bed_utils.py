@@ -35,8 +35,15 @@ def get_bed_from_mpra(dataset):
     """
     data = load_mpra_data(dataset)
     bed = data[['chr', 'pos', 'rs']].copy()
+    print('original: ', bed.shape)
 
-    # bed['chr'] = bed['chr'].map(lambda x: 'chr{0}'.format(x))
+    # remove overlapping variants with mpra_e116
+    if dataset == 'mpra_deseq2':
+        e116 = load_mpra_data('mpra_e116')[['chr', 'pos']].apply(tuple, 1)
+        print('e116: ', len(e116))
+        bed = bed[~bed[['chr', 'pos']].apply(tuple, 1).isin(e116)]
+        print('remaining: ', bed.shape)
+
     bed['pos_end'] = bed['pos'] + 1
     bed = bed[['chr', 'pos', 'pos_end', 'rs']]
     return bed

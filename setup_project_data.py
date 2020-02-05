@@ -20,11 +20,18 @@ def setup(args):
             raise Exception('Overwriting bedfile')
 
         bedfile, bed_loc = load_bed_file(args.project)
+
+
         print(f'Loaded bedfile from {args.project}')
     except Exception as e:
         bedfile = get_bed_from_mpra(args.project)
         bed_loc = save_bed_file(bedfile, args.project)
         print(f'Generated new bedfile in {args.project}')
+
+    # format chr column as integer
+    bedfile = bedfile.assign(chr=bedfile['chr'].apply(lambda x: int(x[3:]))) \
+                     .sort_values(['chr', 'pos']) \
+                     .reset_index(drop=True)
 
     if args.roadmap:
         print('Extracting Roadmap: ')

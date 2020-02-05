@@ -135,9 +135,7 @@ def load_mpra_data(dataset, benchmarks=False):
         data.drop_duplicates(subset=['rs'], inplace=True)
 
     ### setup mpra/epigenetic data ###
-    data_prepared = (data.assign(chr=data['chr'].apply( lambda x: int(x[3:]) ))
-                         .sort_values(['chr', 'pos'])
-                         .reset_index(drop=True))
+    data_prepared = data.sort_values(['chr', 'pos']).reset_index(drop=True)
 
     if benchmarks:
         if not mpra_files[1]:

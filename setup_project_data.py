@@ -6,7 +6,7 @@ from utils.data_utils import *
 from constants import PROCESSED_DIR
 
 
-PROJ_CHOICES = ['mpra_e116', 'mpra_deseq2']
+PROJ_CHOICES = ['mpra_e116', 'mpra_e118', 'mpra_e123', 'mpra_deseq2']
 SPLIT_CHOICES = [None, 'train-test', 'test']
 
 
@@ -93,4 +93,3 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     setup(args)
-

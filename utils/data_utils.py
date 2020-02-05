@@ -5,7 +5,7 @@ import io, subprocess
 from tqdm import tqdm
 # from sklearn.utils import resample
 
-from rollmean_utils import pull_features
+from utils.rollmean_utils import pull_features
 from constants import *
 
 

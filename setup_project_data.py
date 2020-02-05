@@ -6,7 +6,8 @@ from utils.data_utils import *
 from constants import PROCESSED_DIR
 
 
-PROJ_CHOICES = ['mpra_e116']
+PROJ_CHOICES = ['mpra_e116', 'mpra_deseq2']
+SPLIT_CHOICES = [None, 'train-test', 'test']
 
 
 def setup(args):
@@ -18,17 +19,17 @@ def setup(args):
         if args.bed:
             raise Exception('Overwriting bedfile')
 
-        bedfile = load_bed_file(args.project)
+        bedfile, bed_loc = load_bed_file(args.project)
         print(f'Loaded bedfile from {args.project}')
     except Exception as e:
         bedfile = get_bed_from_mpra(args.project)
-        save_bed_file(bedfile, args.project)
+        bed_loc = save_bed_file(bedfile, args.project)
         print(f'Generated new bedfile in {args.project}')
 
     if args.roadmap:
         print('Extracting Roadmap: ')
         fname = project_dir / 'roadmap_extract.tsv'
-        extract_roadmap(bedfile, fname, args.project)
+        extract_roadmap(bed_loc, fname, args.project)
 
     if args.regbase:
         print('Extracting regBase: ')
@@ -40,40 +41,39 @@ def setup(args):
         fname = project_dir / 'eigen_extract.tsv'
         extract_eigen(bedfile, fname)
 
-    # split data into train/test sets
-    if args.split:
+    # further process data and split into train/test sets
+    if args.split == 'train-test':
         bed_train, bed_test = split_train_test(bedfile, test_frac=0.2, seed=args.seed)
+        process_datasets(args, bed_train, split='train')
+        process_datasets(args, bed_test, split='test')
+    elif args.split == 'test':
+        process_datasets(args, bedfile, split='test')
 
-        # generate labels
-        mpra = load_mpra_data(args.project)
-        y_train = pd.merge(mpra, bed_train, on=['chr', 'pos']).loc[:, ['chr', 'pos', 'Label']]
-        y_train.to_csv(project_dir / 'train_label.csv', sep=',', index=False)
-        y_test = pd.merge(mpra, bed_test, on=['chr', 'pos']).loc[:, ['chr', 'pos', 'Label']]
-        y_test.to_csv(project_dir / 'test_label.csv', sep=',', index=False)
 
-        if os.path.exists(project_dir / 'roadmap_extract.tsv'):
-            roadmap = pd.read_csv(project_dir / 'roadmap_extract.tsv', sep='\t')
+def process_datasets(args, bedfile, split='test'):
+    project_dir = PROCESSED_DIR / args.project
 
-            r_train = pd.merge(roadmap, bed_train[['chr', 'pos']], on=['chr', 'pos'])
-            r_train.to_csv(project_dir / 'train_roadmap.csv', sep=',', index=False)
-            r_test = pd.merge(roadmap, bed_test[['chr', 'pos']], on=['chr', 'pos'])
-            r_test.to_csv(project_dir / 'test_roadmap.csv', sep=',', index=False)
+    mpra = load_mpra_data(args.project)
+    y_split = pd.merge(mpra, bedfile, on=['chr', 'pos']).loc[:, ['chr', 'pos', 'Label']]
+    y_split.to_csv(project_dir / f'{split}_label.csv', sep=',', index=False)
 
-        if os.path.exists(project_dir / 'regBase_extract.tsv'):
-            regbase = clean_regbase_data(project_dir / 'regBase_extract.tsv')
+    if os.path.exists(project_dir / 'roadmap_extract.tsv'):
+        roadmap = pd.read_csv(project_dir / 'roadmap_extract.tsv', sep='\t')
 
-            r_train = pd.merge(regbase, bed_train[['chr', 'pos']])
-            r_train.to_csv(project_dir / 'train_regbase.csv', index=False)
-            r_test = pd.merge(regbase, bed_test[['chr', 'pos']])
-            r_test.to_csv(project_dir / 'test_regbase.csv', index=False)
+        r_split = pd.merge(roadmap, bedfile[['chr', 'pos']], on=['chr', 'pos'])
+        r_split.to_csv(project_dir / f'{split}_roadmap.csv', sep=',', index=False)
 
-        if os.path.exists(project_dir / 'eigen_extract.tsv'):
-            eigen = clean_eigen_data(project_dir / 'eigen_extract.tsv')
+    if os.path.exists(project_dir / 'regBase_extract.tsv'):
+        regbase = clean_regbase_data(project_dir / 'regBase_extract.tsv')
 
-            e_train = pd.merge(eigen, bed_train[['chr', 'pos']])
-            e_train.to_csv(project_dir / 'train_eigen.csv', index=False)
-            e_test = pd.merge(eigen, bed_test[['chr', 'pos']])
-            e_test.to_csv(project_dir / 'test_eigen.csv', index=False)
+        r_split = pd.merge(regbase, bedfile[['chr', 'pos']])
+        r_split.to_csv(project_dir / f'{split}_regbase.csv', index=False)
+
+    if os.path.exists(project_dir / 'eigen_extract.tsv'):
+        eigen = clean_eigen_data(project_dir / 'eigen_extract.tsv')
+
+        e_split = pd.merge(eigen, bedfile[['chr', 'pos']])
+        e_split.to_csv(project_dir / f'{split}_eigen.csv', index=False)
 
 
 if __name__ == '__main__':
@@ -87,8 +87,8 @@ if __name__ == '__main__':
                         help='extract regBase data')
     parser.add_argument('--eigen', '-e', default=False, action='store_true',
                         help='extract Eigen data')
-    parser.add_argument('--split', default=False, action='store_true',
-                        help='split all data into train/test sets')
+    parser.add_argument('--split', default=None, choices=SPLIT_CHOICES,
+                        help='split data into train/test sets or just test')
     parser.add_argument('--seed', default=9999, help='train/test random seed')
     args = parser.parse_args()
 

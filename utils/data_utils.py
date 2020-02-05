@@ -3,9 +3,9 @@ import pandas as pd
 import numpy as np
 import io, subprocess
 from tqdm import tqdm
-# from shutil import copyfile
 # from sklearn.utils import resample
 
+from rollmean_utils import pull_features
 from constants import *
 
 
@@ -74,17 +74,17 @@ def extract_regbase(bedfile, outpath):
                     fp.write('\t'.join(row) + '\n')
 
 
-def extract_roadmap(bedfile, outpath, project):
+def extract_roadmap(bedfile_loc, outpath, project):
     if os.path.exists(outpath):
         os.remove(outpath)
 
-    if project == 'mpra_e116':
+    if project in STANDARD_MPRA:
         data = load_mpra_data(project)
         data.drop(['rs', 'Label'], axis=1, inplace=True)
         data.to_csv(outpath, sep='\t', index=False)
 
-    if project == 'mpra_deseq2':
-        data = load_mpra_data(project)
+    elif project == 'mpra_deseq2':
+        pull_features(bedfile_loc)
 
 
 def clean_eigen_data(filename):
@@ -122,7 +122,7 @@ def load_mpra_data(dataset, benchmarks=False):
 
     if dataset == 'mpra_deseq2':
         data.rename(columns={'chrom': 'chr'}, inplace=True)
-        data['rs'] = ''
+        data['rs'] = data[['chr', 'pos']].apply(lambda x: ':'.join(x), axis=1)
 
     ### setup mpra/epigenetic data ###
     data_prepared = (data.assign(chr=data['chr'].apply( lambda x: int(x[3:]) ))

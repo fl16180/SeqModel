@@ -3,7 +3,7 @@ from pathlib import Path
 
 HOME_DIR = Path('/oak/stanford/groups/zihuai/fredlu')
 EIGEN_DIR = Path('/oak/stanford/groups/zihuai/FST/Score')
-ROADMAP_DIR = ''
+ROADMAP_DIR = Path('/oak/stanford/groups/zihuai/SemiSupervise/bigwig/rollmean/')
 BBANK_DIR = HOME_DIR / 'BioBank'
 REGBASE_DIR = HOME_DIR / 'regBase' / 'V1.1'
 MPRA_DIR = HOME_DIR / 'MPRA'
@@ -20,9 +20,7 @@ MPRA_TABLE = {
     'mpra_deseq2': ('1KG_bartender_novaSeq_DESeq2_pvals.txt', '')
 }
 
-ROADMAP_TABLE = {
-    'mpra_e116': 'LabelData_CellPaperE116.txt',
-    'mpra_e118': 'LabelData_KellisE118.txt',
-    'mpra_e123': 'LabelData_KellisE123.txt',
-    'mpra_deseq2': None
-}
+# experiments with ROADMAP data included
+STANDARD_MPRA = ('mpra_e116', 'mpra_e118', 'mpra_e123')
+
+BIGWIG_UTIL = '/home/users/fredlu/opt/bigWigAverageOverBed'

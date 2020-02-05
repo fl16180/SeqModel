@@ -14,18 +14,17 @@ GenRange = {1: 248e6, 2: 242e6, 3: 198e6, 4: 190e6,
 }
 
 
-def load_bed_file(directory):
-    beds = list((PROCESSED_DIR / directory).glob('*.bed'))
-    if len(beds) > 1:
-        raise ValueError("Multiple bedfiles found.")
-    bed = pd.read_csv(beds[0], sep='\t', header=None,
+def load_bed_file(project):
+    path = PROCESSED_DIR / f'{project}/{project}.bed'
+    bed = pd.read_csv(path, sep='\t', header=None,
                       names=['chr', 'pos', 'pos_end', 'rs'])
-    return bed
+    return bed, path
 
 
 def save_bed_file(bedfile, project):
-    bedfile.to_csv(PROCESSED_DIR / f'{project}/{project}.bed',
-                   sep='\t', index=False, header=False)
+    path = PROCESSED_DIR / f'{project}/{project}.bed'
+    bedfile.to_csv(path, sep='\t', index=False, header=False)
+    return path
 
 
 def get_bed_from_mpra(dataset):
@@ -35,14 +34,6 @@ def get_bed_from_mpra(dataset):
     """
     data = load_mpra_data(dataset)
     bed = data[['chr', 'pos', 'rs']].copy()
-    print('original: ', bed.shape)
-
-    # remove overlapping variants with mpra_e116
-    if dataset == 'mpra_deseq2':
-        e116 = load_mpra_data('mpra_e116')[['chr', 'pos']].apply(tuple, 1)
-        print('e116: ', len(e116))
-        bed = bed[~bed[['chr', 'pos']].apply(tuple, 1).isin(e116)]
-        print('remaining: ', bed.shape)
 
     bed['pos_end'] = bed['pos'] + 1
     bed = bed[['chr', 'pos', 'pos_end', 'rs']]

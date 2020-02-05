@@ -4,7 +4,7 @@ bed file with genomic locations. '''
 from subprocess import call
 import glob
 import os
-import multiprocessing as mp
+# import multiprocessing as mp
 import pandas as pd
 
 from constants import ROADMAP_DIR, BIGWIG_UTIL, PROCESSED_DIR
@@ -17,12 +17,15 @@ TMP_DIR = PROCESSED_DIR / 'tmp'
 
 
 def pull_features(bedfile):
-    """ For each ROADMAP marker, execute parallel bigwig pulls for each tissue
+    """ For each ROADMAP marker, execute bigwig pulls for each tissue
     """
+    # for marker in MARKERS:
+    #     pool = mp.Pool(processes=4)
+    #     results = [pool.apply_async(pull_command, args=(marker, i, bedfile))
+    #                for i in range(1, 130)]
     for marker in MARKERS:
-        pool = mp.Pool(processes=4)
-        results = [pool.apply_async(pull_command, args=(marker, i, bedfile))
-                   for i in range(1, 130)]
+        for i in range(1, 130):
+            pull_command(marker, i, bedfile)
 
 
 def pull_command(marker, i, bedfile):
@@ -36,7 +39,7 @@ def pull_command(marker, i, bedfile):
     Outputs are saved in a temporary storage directory to be aggregated later.
     """
     # for example: [...]/E058-DNase.imputed.pval.signal.bigwig
-    filestr = ROADMAP_DIR / marker / f'E{i:03d}-{marker}{tail}'
+    filestr = ROADMAP_DIR / marker / f'E{i:03d}-{marker}{TAIL}'
     output = TMP_DIR / f'{marker}-E{i:03d}'
 
     command = f'{BIGWIG_UTIL} {filestr} {bedfile} {output}'

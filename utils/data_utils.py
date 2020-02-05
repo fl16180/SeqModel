@@ -15,6 +15,11 @@ def _read_bed(x, **kwargs):
 
 
 def extract_eigen(bedfile, outpath):
+    """ Extract rows from Eigen file corresponding to variants in
+    input bedfile. Command line piping adapted from
+    https://github.com/mulinlab/regBase/blob/master/script/regBase_predict.py
+
+    """
     if os.path.exists(outpath):
         os.remove(outpath)
 
@@ -44,9 +49,7 @@ def extract_eigen(bedfile, outpath):
 
 def extract_regbase(bedfile, outpath):
     """ Extract rows from regBase file corresponding to variants in
-    input bedfile. Command line piping adapted from
-    https://github.com/mulinlab/regBase/blob/master/script/regBase_predict.py
-
+    input bedfile.
     """
     if os.path.exists(outpath):
         os.remove(outpath)
@@ -75,6 +78,10 @@ def extract_regbase(bedfile, outpath):
 
 
 def extract_roadmap(bedfile_loc, outpath, project):
+    """ Extract Roadmap data. Currently special cases for each project.
+    Some of the MPRA datasets already have Roadmap data. For new data,
+    the Roadmap must be extracted and compiled separately.
+    """
     if os.path.exists(outpath):
         os.remove(outpath)
 
@@ -122,7 +129,10 @@ def load_mpra_data(dataset, benchmarks=False):
 
     if dataset == 'mpra_deseq2':
         data.rename(columns={'chrom': 'chr'}, inplace=True)
-        data['rs'] = data[['chr', 'pos']].apply(lambda x: ':'.join(x), axis=1)
+        data['rs'] = data['chr'].map(str) + ':' + data['pos'].map(str)
+        # print(data.shape)
+        # print(data[data['rs'].duplicated()][['chr','pos','pvalue_expr','pvalue_allele','rs']])
+        data.drop_duplicates(subset=['rs'], inplace=True)
 
     ### setup mpra/epigenetic data ###
     data_prepared = (data.assign(chr=data['chr'].apply( lambda x: int(x[3:]) ))

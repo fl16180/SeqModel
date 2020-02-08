@@ -18,13 +18,12 @@ def load_bed_file(project):
     path = PROCESSED_DIR / f'{project}/{project}.bed'
     bed = pd.read_csv(path, sep='\t', header=None,
                       names=['chr', 'pos', 'pos_end', 'rs'])
-    return bed, path
+    return bed
 
 
 def save_bed_file(bedfile, project):
     path = PROCESSED_DIR / f'{project}/{project}.bed'
     bedfile.to_csv(path, sep='\t', index=False, header=False)
-    return path
 
 
 def get_bed_from_mpra(dataset):

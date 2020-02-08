@@ -5,7 +5,7 @@ import io, subprocess
 from tqdm import tqdm
 # from sklearn.utils import resample
 
-from utils.rollmean_utils import pull_features
+from utils.bigwig_utils import pull_roadmap_features
 from constants import *
 
 
@@ -77,7 +77,7 @@ def extract_regbase(bedfile, outpath):
                     fp.write('\t'.join(row) + '\n')
 
 
-def extract_roadmap(bedfile_loc, outpath, project):
+def extract_roadmap(bedfile, outpath, project, get_new=True):
     """ Extract Roadmap data. Currently special cases for each project.
     Some of the MPRA datasets already have Roadmap data. For new data,
     the Roadmap must be extracted and compiled separately.
@@ -85,13 +85,15 @@ def extract_roadmap(bedfile_loc, outpath, project):
     if os.path.exists(outpath):
         os.remove(outpath)
 
-    if project in STANDARD_MPRA:
+    col_order = get_roadmap_col_order()
+
+    if not get_new and project in STANDARD_MPRA:
         data = load_mpra_data(project)
         data.drop(['rs', 'Label'], axis=1, inplace=True)
         data.to_csv(outpath, sep='\t', index=False)
 
-    elif project == 'mpra_deseq2':
-        pull_features(bedfile_loc)
+    else:
+        pull_roadmap_features(bedfile, outpath, col_order)
 
 
 def clean_eigen_data(filename):
@@ -127,7 +129,7 @@ def load_mpra_data(dataset, benchmarks=False):
     mpra_files = MPRA_TABLE[dataset]
     data = pd.read_csv(MPRA_DIR / mpra_files[0], sep='\t')
 
-    if dataset == 'mpra_deseq2':
+    if dataset == 'mpra_nova':
         data.rename(columns={'chrom': 'chr'}, inplace=True)
         data['rs'] = data['chr'].map(str) + ':' + data['pos'].map(str)
         # print(data.shape)
@@ -135,7 +137,9 @@ def load_mpra_data(dataset, benchmarks=False):
         data.drop_duplicates(subset=['rs'], inplace=True)
 
     ### setup mpra/epigenetic data ###
-    data_prepared = data.sort_values(['chr', 'pos']).reset_index(drop=True)
+    data_prepared = data.assign(chr=data['chr'].apply(lambda x: int(x[3:]))) \
+                        .sort_values(['chr', 'pos']) \
+                        .reset_index(drop=True)
 
     if benchmarks:
         if not mpra_files[1]:
@@ -165,6 +169,12 @@ def load_mpra_data(dataset, benchmarks=False):
         return data_prepared, bench_prepared
 
     return data_prepared
+
+
+def get_roadmap_col_order():
+    data = load_mpra_data(ROADMAP_COL_ORDER_REF)
+    data.drop(['rs', 'Label'], axis=1, inplace=True)
+    return data.columns
 
 
 def get_tissue_scores(data, tissue='E116'):
@@ -207,7 +217,7 @@ def split_train_dev_test(data, dev_frac, test_frac, seed=None):
 
 def rearrange_by_epigenetic_marker(df):
 
-    marks = ['DNase','H3K27ac','H3K27me3','H3K36me3','H3K4me1','H3K4me3','H3K9ac','H3K9me3']
+    marks = ROADMAP_MARKERS
     nums = [x for x in range(1, 130) if x not in [60, 64]]
 
     cols = [x + '-E{:03d}'.format(y) for x in marks for y in nums]

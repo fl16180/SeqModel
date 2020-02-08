@@ -52,12 +52,12 @@ train_df.fillna(mean_cols, inplace=True)
 
 
 
-test_df = load_test_set('mpra_deseq2', make_new=True)
+test_df = load_test_set('mpra_nova', make_new=True)
 
 test_df.drop(omit_cols, axis=1, inplace=True)
 test_df.fillna(mean_cols, inplace=True)
 
-test_df.to_csv('deseq2_test_dat.csv', index=False)
+test_df.to_csv('nova_test_dat.csv', index=False)
 
 
 

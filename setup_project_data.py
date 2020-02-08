@@ -20,8 +20,6 @@ def setup(args):
             raise Exception('Overwriting bedfile')
 
         bedfile, bed_loc = load_bed_file(args.project)
-
-
         print(f'Loaded bedfile from {args.project}')
     except Exception as e:
         bedfile = get_bed_from_mpra(args.project)
@@ -61,26 +59,33 @@ def process_datasets(args, bedfile, split='test'):
     project_dir = PROCESSED_DIR / args.project
 
     mpra = load_mpra_data(args.project)
+    mpra = mpra.assign(chr=mpra['chr'].apply(lambda x: int(x[3:]))) \
+                .sort_values(['chr', 'pos']) \
+                .reset_index(drop=True)
+
+    if args.project == 'mpra_deseq2':
+        mpra['Label'] = mpra['pvalue_expr'].apply(lambda x: x < 1e-5).astype(int)
+
     y_split = pd.merge(mpra, bedfile, on=['chr', 'pos']).loc[:, ['chr', 'pos', 'Label']]
     y_split.to_csv(project_dir / f'{split}_label.csv', sep=',', index=False)
 
-    if os.path.exists(project_dir / 'roadmap_extract.tsv'):
-        roadmap = pd.read_csv(project_dir / 'roadmap_extract.tsv', sep='\t')
+    # if os.path.exists(project_dir / 'roadmap_extract.tsv'):
+    #     roadmap = pd.read_csv(project_dir / 'roadmap_extract.tsv', sep='\t')
 
-        r_split = pd.merge(roadmap, bedfile[['chr', 'pos']], on=['chr', 'pos'])
-        r_split.to_csv(project_dir / f'{split}_roadmap.csv', sep=',', index=False)
+    #     r_split = pd.merge(roadmap, bedfile[['chr', 'pos']], on=['chr', 'pos'])
+    #     r_split.to_csv(project_dir / f'{split}_roadmap.csv', sep=',', index=False)
 
-    if os.path.exists(project_dir / 'regBase_extract.tsv'):
-        regbase = clean_regbase_data(project_dir / 'regBase_extract.tsv')
+    # if os.path.exists(project_dir / 'regBase_extract.tsv'):
+    #     regbase = clean_regbase_data(project_dir / 'regBase_extract.tsv')
 
-        r_split = pd.merge(regbase, bedfile[['chr', 'pos']])
-        r_split.to_csv(project_dir / f'{split}_regbase.csv', index=False)
+    #     r_split = pd.merge(regbase, bedfile[['chr', 'pos']])
+    #     r_split.to_csv(project_dir / f'{split}_regbase.csv', index=False)
 
-    if os.path.exists(project_dir / 'eigen_extract.tsv'):
-        eigen = clean_eigen_data(project_dir / 'eigen_extract.tsv')
+    # if os.path.exists(project_dir / 'eigen_extract.tsv'):
+    #     eigen = clean_eigen_data(project_dir / 'eigen_extract.tsv')
 
-        e_split = pd.merge(eigen, bedfile[['chr', 'pos']])
-        e_split.to_csv(project_dir / f'{split}_eigen.csv', index=False)
+    #     e_split = pd.merge(eigen, bedfile[['chr', 'pos']])
+    #     e_split.to_csv(project_dir / f'{split}_eigen.csv', index=False)
 
 
 if __name__ == '__main__':

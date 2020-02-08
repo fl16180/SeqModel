@@ -6,8 +6,11 @@ import glob
 import os
 # import multiprocessing as mp
 import pandas as pd
+from tqdm import tqdm
 
-from constants import ROADMAP_DIR, BIGWIG_UTIL, PROCESSED_DIR
+import sys
+sys.path.append('../')
+from constants import *
 
 
 MARKERS = ['DNase', 'H3K27ac', 'H3K27me3', 'H3K36me3',
@@ -19,10 +22,6 @@ TMP_DIR = PROCESSED_DIR / 'tmp'
 def pull_features(bedfile):
     """ For each ROADMAP marker, execute bigwig pulls for each tissue
     """
-    # for marker in MARKERS:
-    #     pool = mp.Pool(processes=4)
-    #     results = [pool.apply_async(pull_command, args=(marker, i, bedfile))
-    #                for i in range(1, 130)]
     for marker in MARKERS:
         for i in range(1, 130):
             pull_command(marker, i, bedfile)
@@ -46,7 +45,7 @@ def pull_command(marker, i, bedfile):
     call(command, shell=True)
 
 
-def features_to_csv(feature_dir, outpath):
+def features_to_csv(outpath, feature_dir=TMP_DIR):
     """ Post-extraction, combine temporary outputs into a DataFrame and save
     to csv.
     """
@@ -54,10 +53,9 @@ def features_to_csv(feature_dir, outpath):
     features = glob.glob('*')
 
     df = pd.DataFrame()
-    for fn in features:
-        print(fn)
+    for fn in tqdm(features):
         tmp = pd.read_csv(f'./{fn}', sep='\t',
-                          names=['variant', 'c1', 'c2', 'v1', 'v2', '{fn}'])
+                          names=['variant', 'c1', 'c2', 'v1', 'v2', f'{fn}'])
         tmp = tmp.drop(['c1','c2','v1','v2'], axis=1)
         df = pd.concat([df, tmp], axis=1)
         df = df.loc[:, ~df.columns.duplicated()]
@@ -67,8 +65,28 @@ def features_to_csv(feature_dir, outpath):
 
 if __name__ == '__main__':
 
-    # bedfile = '/home/users/fredlu/E116.bed'
-    # pull_features(bedfile)
+    def load_bed_file(project):
+        path = PROCESSED_DIR / f'{project}/{project}.bed'
+        bed = pd.read_csv(path, sep='\t', header=None,
+                        names=['chr', 'pos', 'pos_end', 'rs'])
+        return bed, path
 
-    feature_dir = 'C:/Users/fredl/Documents/datasets/functional_variants/bigwig/tmp/'
-    features_to_csv(feature_dir)
+    outpath = PROCESSED_DIR / 'roadmap_extract.csv'
+    # features_to_csv(outpath)
+
+    roadmap = pd.read_csv(outpath)
+
+    # merge chr and pos back in
+    bedfile = load_bed_file('mpra_deseq2')[0]
+
+    # format chr column as integer
+    bedfile = bedfile.assign(chr=bedfile['chr'].apply(lambda x: int(x[3:]))) \
+                     .sort_values(['chr', 'pos']) \
+                     .reset_index(drop=True)
+
+    roadmap = pd.merge(bedfile[['chr', 'pos', 'rs']], roadmap, left_on='rs', right_on='variant')
+    roadmap.drop(['rs', 'variant'], axis=1, inplace=True)
+
+    cols = pd.read_csv(PROCESSED_DIR / 'mpra_e116' / 'roadmap_extract.tsv', sep='\t')
+    roadmap = roadmap.loc[:, cols.columns]
+    roadmap.to_csv(PROCESSED_DIR / 'mpra_deseq2' / 'roadmap_extract.tsv', sep='\t', index=False)

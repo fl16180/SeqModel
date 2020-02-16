@@ -34,6 +34,8 @@ from datasets.data_loader import *
 #         X = F.softmax(self.final(X), dim=-1)
 #         return X
 
+if not os.path.exists(project_dir / 'models'):
+    os.mkdir(project_dir / 'models')
 
 project = 'mpra_e116'
 project_dir = PROCESSED_DIR / project

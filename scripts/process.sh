@@ -12,4 +12,4 @@
 module load python/3.6.1
 source /oak/stanford/groups/zihuai/fredlu/SeqModel/venv/bin/activate
 cd /oak/stanford/groups/zihuai/fredlu/SeqModel
-python setup_project_data.py -p mpra_nova -r -rb -e --split test
+python setup_project_data.py -p mpra_e116 -r -rb -e --split train-test

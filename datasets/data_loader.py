@@ -8,7 +8,7 @@ def load_train_set(project, datasets=['roadmap', 'eigen', 'regbase'], make_new=T
     try:
         if make_new:
             raise Exception('Compiling train matrix.')
-        train = pd.read_csv(proj_loc / f'train_matrix.csv')
+        train = pd.read_csv(proj_loc / f'matrix_train.csv')
 
     except Exception as e:
         train = pd.read_csv(proj_loc / 'train_label.csv')
@@ -20,7 +20,7 @@ def load_train_set(project, datasets=['roadmap', 'eigen', 'regbase'], make_new=T
             train = pd.merge(train, df, on=['chr', 'pos'], suffixes=('', '__y'))
             train.drop(list(train.filter(regex='__y$')), axis=1, inplace=True)
 
-        train.to_csv(proj_loc / 'train_matrix.csv', index=False)
+        train.to_csv(proj_loc / 'matrix_train.csv', index=False)
     return train
 
 
@@ -30,7 +30,7 @@ def load_test_set(project, datasets=['roadmap', 'eigen', 'regbase'], make_new=Tr
     try:
         if make_new:
             raise Exception('Compiling test matrix.')
-        test = pd.read_csv(proj_loc / f'test_matrix.csv')
+        test = pd.read_csv(proj_loc / f'matrix_test.csv')
 
     except Exception as e:
         test = pd.read_csv(proj_loc / 'test_label.csv')
@@ -42,5 +42,5 @@ def load_test_set(project, datasets=['roadmap', 'eigen', 'regbase'], make_new=Tr
             test = pd.merge(test, df, on=['chr', 'pos'], suffixes=('', '__y'))
             test.drop(list(test.filter(regex='__y$')), axis=1, inplace=True)
 
-        test.to_csv(proj_loc / 'test_matrix.csv', index=False)
+        test.to_csv(proj_loc / 'matrix_test.csv', index=False)
     return test

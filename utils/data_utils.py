@@ -9,6 +9,53 @@ from utils.bigwig_utils import pull_roadmap_features
 from constants import *
 
 
+def load_mpra_data(dataset, benchmarks=False):
+    ''' processes raw MPRA data files and optionally benchmark files '''
+    mpra_files = MPRA_TABLE[dataset]
+    data = pd.read_csv(MPRA_DIR / mpra_files[0], sep='\t')
+
+    if dataset == 'mpra_nova':
+        data.rename(columns={'chrom': 'chr'}, inplace=True)
+        data['rs'] = data['chr'].map(str) + ':' + data['pos'].map(str)
+        # print(data.shape)
+        # print(data[data['rs'].duplicated()][['chr','pos','pvalue_expr','pvalue_allele','rs']])
+        data.drop_duplicates(subset=['rs'], inplace=True)
+
+    ### setup mpra/epigenetic data ###
+    data_prepared = data.assign(chr=data['chr'].apply(lambda x: int(x[3:]))) \
+                        .sort_values(['chr', 'pos']) \
+                        .reset_index(drop=True)
+
+    if benchmarks:
+        if not mpra_files[1]:
+            return data_prepared, None
+
+        bench = pd.read_csv(MPRA_DIR / mpra_files[1], sep='\t')
+
+        ### setup benchmark data ###
+        # modify index column to extract chr and pos information
+        chr_pos = (bench.reset_index()
+                        .loc[:, 'index']
+                        .str
+                        .split('-', expand=True)
+                        .astype(int))
+
+        # update benchmark data with chr and pos columns
+        bench_prepared = (bench.reset_index()
+                            .assign(chr=chr_pos[0])
+                            .assign(pos=chr_pos[1])
+                            .drop('index', axis=1)
+                            .sort_values(['chr', 'pos'])
+                            .reset_index(drop=True))
+
+        # put chr and pos columns in front for readability
+        reordered_columns = ['chr', 'pos'] + bench_prepared.columns.values.tolist()[:-2]
+        bench_prepared = bench_prepared[reordered_columns]
+        return data_prepared, bench_prepared
+
+    return data_prepared
+
+
 def _read_bed(x, **kwargs):
     """ Helper function to parse output from a tabix query """
     return pd.read_csv(x, sep=r'\s+', header=None, index_col=False, **kwargs)
@@ -93,7 +140,7 @@ def extract_roadmap(bedfile, outpath, project, get_new=True):
         data.to_csv(outpath, sep='\t', index=False)
 
     else:
-        pull_roadmap_features(bedfile, outpath, col_order)
+        pull_roadmap_features(bedfile, outpath, project, col_order)
 
 
 def clean_eigen_data(filename):
@@ -122,53 +169,6 @@ def clean_regbase_data(filename):
                         .groupby(['chr', 'pos', 'ref'], as_index=False) \
                         .mean()
     return regbase
-
-
-def load_mpra_data(dataset, benchmarks=False):
-    ''' processes raw MPRA data files and optionally benchmark files '''
-    mpra_files = MPRA_TABLE[dataset]
-    data = pd.read_csv(MPRA_DIR / mpra_files[0], sep='\t')
-
-    if dataset == 'mpra_nova':
-        data.rename(columns={'chrom': 'chr'}, inplace=True)
-        data['rs'] = data['chr'].map(str) + ':' + data['pos'].map(str)
-        # print(data.shape)
-        # print(data[data['rs'].duplicated()][['chr','pos','pvalue_expr','pvalue_allele','rs']])
-        data.drop_duplicates(subset=['rs'], inplace=True)
-
-    ### setup mpra/epigenetic data ###
-    data_prepared = data.assign(chr=data['chr'].apply(lambda x: int(x[3:]))) \
-                        .sort_values(['chr', 'pos']) \
-                        .reset_index(drop=True)
-
-    if benchmarks:
-        if not mpra_files[1]:
-            return data_prepared, None
-
-        bench = pd.read_csv(MPRA_DIR / mpra_files[1], sep='\t')
-
-        ### setup benchmark data ###
-        # modify index column to extract chr and pos information
-        chr_pos = (bench.reset_index()
-                        .loc[:, 'index']
-                        .str
-                        .split('-', expand=True)
-                        .astype(int))
-
-        # update benchmark data with chr and pos columns
-        bench_prepared = (bench.reset_index()
-                            .assign(chr=chr_pos[0])
-                            .assign(pos=chr_pos[1])
-                            .drop('index', axis=1)
-                            .sort_values(['chr', 'pos'])
-                            .reset_index(drop=True))
-
-        # put chr and pos columns in front for readability
-        reordered_columns = ['chr', 'pos'] + bench_prepared.columns.values.tolist()[:-2]
-        bench_prepared = bench_prepared[reordered_columns]
-        return data_prepared, bench_prepared
-
-    return data_prepared
 
 
 def get_roadmap_col_order():

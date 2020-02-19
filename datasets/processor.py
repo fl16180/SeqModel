@@ -1,3 +1,4 @@
+import os
 import pickle as pkl
 from constants import PROCESSED_DIR
 from sklearn.preprocessing import StandardScaler
@@ -22,7 +23,7 @@ class Processor:
         omit_cols += [x + '_PHRED' for x in omit_cols]
         df.drop(omit_cols, axis=1, inplace=True)
 
-        col_means = train_df.mean()
+        col_means = df.mean()
         df.fillna(col_means, inplace=True)
 
         # standardize feature columns

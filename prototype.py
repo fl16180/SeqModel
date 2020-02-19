@@ -10,67 +10,111 @@
 
 from constants import *
 from datasets.data_loader import *
+from datasets.processor import Processor
 
-# from sklearn.preprocessing import StandardScaler
+
+class MpraNet(nn.Module):
+    def __init__(self, n_input, n_units, nonlin=torch.sigmoid, dropout=0.4):
+        super(MpraNet, self).__init__()
+        self.nonlin = nonlin
+
+        self.dense1 = nn.Linear(n_input, n_units[0])
+        self.dropout = nn.Dropout(dropout)
+        self.dense2 = nn.Linear(n_units[0], n_units[1])
+        self.final = nn.Linear(n_units[1], 2)
+
+    def forward(self, X, **kwargs):
+        X = self.nonlin(self.dense1(X))
+        X = self.dropout(X)
+        X = self.nonlin(self.dense2(X))
+        X = self.dropout(X)
+        X = F.softmax(self.final(X), dim=-1)
+        return X
 
 
-# class MpraNet(nn.Module):
-#     def __init__(self, n_input, n_units, nonlin=F.sigmoid, l2=2e-6, dropout=0.4):
-#         super(MpraNet, self).__init__()
-#         self.num_units = num_units
-#         self.nonlin = nonlin
-#         self.dropout = dropout
+class CostSensitiveLoss(nn.Module):
 
-#         self.dense1 = nn.Linear(n_input, n_units[0])
-#         self.dropout = nn.Dropout(dropout)
-#         self.dense2 = nn.Linear(n_units[0], n_units[1])
-#         self.final = nn.Linear(n_units[1], 2)
+    def __init__(self, FN=1., FP=1., TN=0.0, TP=0.0):
+        super().__init__()
+        self.FN = FN
+        self.FP = FP
+        self.TN = TN
+        self.TP = TP
 
-#     def forward(self, X, **kwargs):
-#         X = self.nonlin(self.dense1(X))
-#         X = self.dropout(X)
-#         X = self.nonlin(self.dense2(X))
-#         X = self.dropout(X)
-#         X = F.softmax(self.final(X), dim=-1)
-#         return X
+    def forward(self, input, target):
+        input = torch.log(input)
+        predict_0 = input[:, 0]
+        predict_1 = input[:, 1]
 
-if not os.path.exists(project_dir / 'models'):
-    os.mkdir(project_dir / 'models')
+        cost = target * predict_1 * self.FN
+        cost += (1 - target) * predict_0 * self.FP
+#         cost += predict_0 * self.TP
+#         cost += predict_1 * self.TN
+
+        return -1 * torch.mean(cost)
+
+net = NeuralNetClassifier(
+    MpraNet,
+    batch_size=256,
+
+    criterion=CostSensitiveLoss,
+
+    optimizer=torch.optim.Adam,
+    optimizer__weight_decay=2e-6,
+
+    lr=1e-4,
+    max_epochs=20,
+
+    iterator_train__shuffle=True,
+
+    module__n_input=1079,
+    module__n_units=(400, 250),
+
+    module__dropout=0.3,
+    callbacks=[auc, apr],
+)
+
+torch.manual_seed(1000)
+
+net.fit(x_train, y_train)
+
+c_test = net.predict(x_test)
+p_test = net.predict_proba(x_test)
+
+
+
+
 
 project = 'mpra_e116'
 project_dir = PROCESSED_DIR / project
 
+train_df = load_train_set(project, make_new=True)
 
-train_df = load_train_set(project, make_new=False)
+proc = Processor(project)
+train_df = proc.fit_transform(train_df, na_thresh=0.05)
+proc.save()
 
-na_thresh = 0.05
-na_filt = (train_df.isna().sum() > na_thresh * len(train_df))
-omit_cols = train_df.columns[na_filt].tolist()
-omit_cols += [x + '_PHRED' for x in omit_cols]
-
-train_df.drop(omit_cols, axis=1, inplace=True)
-mean_cols = train_df.mean()
-train_df.fillna(mean_cols, inplace=True)
+X_train = train_df.drop(['chr', 'pos', 'Label'], axis=1).astype(np.float32)
+y_train = train_df['Label'].astype(np.int64)
 
 
 
-test_df = load_test_set('mpra_nova', make_new=True)
-
-test_df.drop(omit_cols, axis=1, inplace=True)
-test_df.fillna(mean_cols, inplace=True)
-
-test_df.to_csv('nova_test_dat.csv', index=False)
+# train_df.to_csv('e116_train.csv', index=False)
 
 
+# test_df = load_test_set(project, make_new=True)
+test_df = load_test_set('mpra_deseq2', make_new=True)
 
-# np.save(project_dir / 'train_means.npy', mean_cols)
-# # train_df.to_csv('train_dat.csv', index=False)
 
-# y_train = train_df['Label']
-# X_train = train_df.drop('Label', axis=1)
+proc = Processor(project)
+proc.load()
+test_df = proc.transform(test_df)
 
-# scaler = StandardScaler()
-# X_train = scaler.fit_transform(X_train)
+X_test = train_df.drop(['chr', 'pos', 'Label'], axis=1).astype(np.float32)
+y_test = train_df['Label'].astype(np.int64)
+
+# test_df.to_csv('e116_test.csv', index=False)
+
 
 # net = NeuralNetClassifier(
 #     MpraNet,

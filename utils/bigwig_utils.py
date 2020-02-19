@@ -11,7 +11,7 @@ import re
 from constants import *
 
 
-def pull_roadmap_features(bedfile, outpath, col_order, feature_dir=TMP_DIR):
+def pull_roadmap_features(bedfile, outpath, project, col_order, feature_dir=TMP_DIR):
     """ For each ROADMAP marker, execute bigwig pulls for each tissue
     """
     # clear tmp directory
@@ -29,15 +29,9 @@ def pull_roadmap_features(bedfile, outpath, col_order, feature_dir=TMP_DIR):
 
     # stack features into dataframe
     compiled = features_to_csv(feature_dir)
-    compiled['chr'] = compiled['variant'].map(lambda x: x.split(':')[0]) \
-                                         .map(lambda x: x[3:]) \
-                                         .astype(int)
 
-    compiled['pos'] = compiled['variant'].map(lambda x: x.split(':')[1]) \
-                                         .astype(int)
-
-    compiled.drop('variant', axis=1, inplace=True)
-
+    compiled = pd.merge(bedfile, compiled, left_on='rs', right_on='variant')
+    compiled.drop(['rs', 'variant', 'pos_end'], axis=1, inplace=True)
     compiled = compiled.loc[:, col_order]
     compiled.to_csv(outpath, sep='\t', index=False)
 

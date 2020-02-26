@@ -17,14 +17,13 @@ def load_mpra_data(dataset, benchmarks=False):
     if dataset == 'mpra_nova':
         data.rename(columns={'chrom': 'chr'}, inplace=True)
         data['rs'] = data['chr'].map(str) + ':' + data['pos'].map(str)
-        # print(data.shape)
-        # print(data[data['rs'].duplicated()][['chr','pos','pvalue_expr','pvalue_allele','rs']])
         data.drop_duplicates(subset=['rs'], inplace=True)
 
     ### setup mpra/epigenetic data ###
     data_prepared = data.assign(chr=data['chr'].apply(lambda x: int(x[3:]))) \
                         .sort_values(['chr', 'pos']) \
                         .reset_index(drop=True)
+    data_prepared[['chr', 'pos']] = data_prepared[['chr', 'pos']].astype(int)
 
     if benchmarks:
         if not mpra_files[1]:
@@ -140,7 +139,7 @@ def extract_roadmap(bedfile, outpath, project, get_new=True):
         data.to_csv(outpath, sep='\t', index=False)
 
     else:
-        pull_roadmap_features(bedfile, outpath, project, col_order)
+        pull_roadmap_features(bedfile, outpath, col_order)
 
 
 def clean_eigen_data(filename):
@@ -154,6 +153,7 @@ def clean_eigen_data(filename):
                     .drop('alt', axis=1) \
                     .groupby(['chr', 'pos', 'ref'], as_index=False) \
                     .mean()
+    eigen[['chr', 'pos']] = eigen[['chr', 'pos']].astype(int)
     return eigen
 
 
@@ -168,13 +168,27 @@ def clean_regbase_data(filename):
                         .drop(['Pos_start', 'Alts'], axis=1) \
                         .groupby(['chr', 'pos', 'ref'], as_index=False) \
                         .mean()
+    regbase[['chr', 'pos']] = regbase[['chr', 'pos']].astype(int)
     return regbase
 
 
-def get_roadmap_col_order():
-    data = load_mpra_data(ROADMAP_COL_ORDER_REF)
-    data.drop(['rs', 'Label'], axis=1, inplace=True)
-    return data.columns
+def get_roadmap_col_order(order='tissue'):
+    """
+    Get list of roadmap features in specified order.
+
+    Inputs:
+        order: 'tissue' or 'marker'
+
+    Converts column index to list for downstream appends """
+    if order == 'tissue':
+        data = load_mpra_data(ROADMAP_COL_ORDER_REF)
+        data.drop(['chr', 'pos', 'rs', 'Label'], axis=1, inplace=True)
+        return data.columns.tolist()
+    else:
+        marks = ROADMAP_MARKERS
+        nums = [x for x in range(1, 130) if x not in [60, 64]]
+        cols = [x + '-E{:03d}'.format(y) for x in marks for y in nums]
+        return cols
 
 
 def get_tissue_scores(data, tissue='E116'):
@@ -216,12 +230,9 @@ def split_train_dev_test(data, dev_frac, test_frac, seed=None):
 
 
 def rearrange_by_epigenetic_marker(df):
-
     marks = ROADMAP_MARKERS
     nums = [x for x in range(1, 130) if x not in [60, 64]]
-
     cols = [x + '-E{:03d}'.format(y) for x in marks for y in nums]
-
     return df.loc[:, cols]
 
 

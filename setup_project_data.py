@@ -3,6 +3,7 @@ import os
 import pandas as pd
 from utils.bed_utils import get_bed_from_mpra, load_bed_file, save_bed_file
 from utils.data_utils import *
+from utils.neighbor_utils import pull_roadmap_with_neighbors, roadmap_neighbors_to_mat
 from constants import PROCESSED_DIR
 
 
@@ -40,6 +41,15 @@ def setup(args):
         fname = project_dir / 'eigen_extract.tsv'
         extract_eigen(bedfile, fname)
 
+    if args.neighbor:
+        # check that each variant has a unique name before proceeding
+        assert len(bedfile['rs'].unique()) == bedfile.shape[0]
+
+        n_neigh, sample_res = map(int, args.neigh_param.split(','))
+        fname = project_dir / f'roadmap_neighbor_{n_neigh}_{sample_res}.tsv'
+        pull_roadmap_with_neighbors(bedfile, fname, n_neigh, sample_res)
+
+
     # further process data and split into train/test sets
     if args.split == 'train-test':
         bed_train, bed_test = split_train_test(bedfile,
@@ -58,25 +68,32 @@ def process_datasets(args, bedfile, split='test'):
     mpra = load_mpra_data(args.project)
 
     if args.project == 'mpra_nova':
-        mpra['Label'] = mpra['pvalue_expr'].apply(lambda x: x < 1e-5).astype(int)
+        # mpra['Label'] = mpra['pvalue_expr'].apply(lambda x: x < 1e-5).astype(int)
+        mpra['Label'] = mpra['pvalue_expr']
 
-    y_split = pd.merge(mpra, bedfile, on=['chr', 'pos']).loc[:, ['chr', 'pos', 'Label']]
+    y_split = pd.merge(bedfile, mpra, on=['chr', 'pos']).loc[:, ['chr', 'pos', 'Label']]
     y_split.to_csv(project_dir / f'{split}_label.csv', sep=',', index=False)
 
     if os.path.exists(project_dir / 'roadmap_extract.tsv'):
         roadmap = pd.read_csv(project_dir / 'roadmap_extract.tsv', sep='\t')
-        r_split = pd.merge(roadmap, bedfile[['chr', 'pos']], on=['chr', 'pos'])
+        roadmap[['chr', 'pos']] = roadmap[['chr', 'pos']].astype(int)
+        r_split = pd.merge(bedfile[['chr', 'pos']], roadmap, on=['chr', 'pos'])
         r_split.to_csv(project_dir / f'{split}_roadmap.csv', sep=',', index=False)
 
     if os.path.exists(project_dir / 'regBase_extract.tsv'):
         regbase = clean_regbase_data(project_dir / 'regBase_extract.tsv')
-        r_split = pd.merge(regbase, bedfile[['chr', 'pos']])
+        r_split = pd.merge(bedfile[['chr', 'pos']], regbase)
         r_split.to_csv(project_dir / f'{split}_regbase.csv', index=False)
 
     if os.path.exists(project_dir / 'eigen_extract.tsv'):
         eigen = clean_eigen_data(project_dir / 'eigen_extract.tsv')
-        e_split = pd.merge(eigen, bedfile[['chr', 'pos']])
+        e_split = pd.merge(bedfile[['chr', 'pos']], eigen)
         e_split.to_csv(project_dir / f'{split}_eigen.csv', index=False)
+
+    nn, sr = map(int, args.neigh_param.split(','))
+    if os.path.exists(project_dir / f'roadmap_neighbor_{nn}_{sr}.tsv'):
+        neighbors = pd.read_csv(project_dir / f'roadmap_neighbor_{nn}_{sr}.tsv', sep='\t')
+        roadmap_neighbors_to_mat(bedfile, neighbors, project_dir / f'{split}_neighbor_{nn}_{sr}')
 
 
 if __name__ == '__main__':
@@ -90,6 +107,10 @@ if __name__ == '__main__':
                         help='extract regBase data')
     parser.add_argument('--eigen', '-e', default=False, action='store_true',
                         help='extract Eigen data')
+    parser.add_argument('--neighbor', '-n', default=False, action='store_true',
+                        help='extract neighboring Roadmap data')
+    parser.add_argument('--neigh_param', '-npr', default='0,0', type=str,
+                        help='Roadmap neighbor params: (n_neigh,sample_res)')
     parser.add_argument('--split', default=None, choices=SPLIT_CHOICES,
                         help='split data into train/test sets or just test')
     parser.add_argument('--seed', default=9999, help='train/test random seed')

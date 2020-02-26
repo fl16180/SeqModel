@@ -20,7 +20,7 @@ class Processor:
         # NA threshold and mean impute
         na_filt = (df.isna().sum() > na_thresh * len(df))
         omit_cols = df.columns[na_filt].tolist()
-        omit_cols += [x + '_PHRED' for x in omit_cols]
+        omit_cols += [x + '_PHRED' for x in omit_cols if x + '_PHRED' in df.columns]
         df.drop(omit_cols, axis=1, inplace=True)
 
         col_means = df.mean()
@@ -36,7 +36,7 @@ class Processor:
         return df
 
     def transform(self, df):
-        df.drop(self.omit_cols, axis=1, inplace=True)
+        df.drop(df.columns.intersection(self.omit_cols), axis=1, inplace=True)
         df.fillna(self.col_means, inplace=True)
         df[self.fit_feats] = self.scaler.transform(df[self.fit_feats])
         return df

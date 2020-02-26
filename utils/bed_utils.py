@@ -18,6 +18,7 @@ def load_bed_file(project):
     path = PROCESSED_DIR / f'{project}/{project}.bed'
     bed = pd.read_csv(path, sep='\t', header=None,
                       names=['chr', 'pos', 'pos_end', 'rs'])
+    bed[['chr', 'pos', 'pos_end']] = bed[['chr', 'pos', 'pos_end']].astype(int)
     return bed
 
 

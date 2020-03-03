@@ -64,6 +64,8 @@ def setup(args):
 
 
 def process_datasets(args, bedfile, split='test'):
+
+    print(f'Processing {split} set')
     project_dir = PROCESSED_DIR / args.project
     mpra = load_mpra_data(args.project)
 
@@ -74,24 +76,28 @@ def process_datasets(args, bedfile, split='test'):
     y_split = pd.merge(bedfile, mpra, on=['chr', 'pos']).loc[:, ['chr', 'pos', 'Label']]
     y_split.to_csv(project_dir / f'{split}_label.csv', sep=',', index=False)
 
-    if os.path.exists(project_dir / 'roadmap_extract.tsv'):
-        roadmap = pd.read_csv(project_dir / 'roadmap_extract.tsv', sep='\t')
-        roadmap[['chr', 'pos']] = roadmap[['chr', 'pos']].astype(int)
-        r_split = pd.merge(bedfile[['chr', 'pos']], roadmap, on=['chr', 'pos'])
-        r_split.to_csv(project_dir / f'{split}_roadmap.csv', sep=',', index=False)
+    # if os.path.exists(project_dir / 'roadmap_extract.tsv'):
+    #     print('\tRoadmap')
+    #     roadmap = pd.read_csv(project_dir / 'roadmap_extract.tsv', sep='\t')
+    #     roadmap[['chr', 'pos']] = roadmap[['chr', 'pos']].astype(int)
+    #     r_split = pd.merge(bedfile[['chr', 'pos']], roadmap, on=['chr', 'pos'])
+    #     r_split.to_csv(project_dir / f'{split}_roadmap.csv', sep=',', index=False)
 
-    if os.path.exists(project_dir / 'regBase_extract.tsv'):
-        regbase = clean_regbase_data(project_dir / 'regBase_extract.tsv')
-        r_split = pd.merge(bedfile[['chr', 'pos']], regbase)
-        r_split.to_csv(project_dir / f'{split}_regbase.csv', index=False)
+    # if os.path.exists(project_dir / 'regBase_extract.tsv'):
+    #     print('\tregBase')
+    #     regbase = clean_regbase_data(project_dir / 'regBase_extract.tsv')
+    #     r_split = pd.merge(bedfile[['chr', 'pos']], regbase)
+    #     r_split.to_csv(project_dir / f'{split}_regbase.csv', index=False)
 
-    if os.path.exists(project_dir / 'eigen_extract.tsv'):
-        eigen = clean_eigen_data(project_dir / 'eigen_extract.tsv')
-        e_split = pd.merge(bedfile[['chr', 'pos']], eigen)
-        e_split.to_csv(project_dir / f'{split}_eigen.csv', index=False)
+    # if os.path.exists(project_dir / 'eigen_extract.tsv'):
+    #     print('\tEigen')
+    #     eigen = clean_eigen_data(project_dir / 'eigen_extract.tsv')
+    #     e_split = pd.merge(bedfile[['chr', 'pos']], eigen)
+    #     e_split.to_csv(project_dir / f'{split}_eigen.csv', index=False)
 
     nn, sr = map(int, args.neigh_param.split(','))
     if os.path.exists(project_dir / f'roadmap_neighbor_{nn}_{sr}.tsv'):
+        print('\tRoadmap neighbor')
         neighbors = pd.read_csv(project_dir / f'roadmap_neighbor_{nn}_{sr}.tsv', sep='\t')
         roadmap_neighbors_to_mat(bedfile, neighbors, project_dir / f'{split}_neighbor_{nn}_{sr}')
 

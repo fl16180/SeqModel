@@ -7,3 +7,1028 @@ processing chromosomes
 processing chromosomes
 processing chromosomes
 processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+Couldn't open /oak/stanford/groups/zihuai/SemiSupervise/bigwig/rollmean/DNase/E060-DNase.imputed.pval.signal.bigwig
+processing chromosomes
+processing chromosomes
+processing chromosomes
+Couldn't open /oak/stanford/groups/zihuai/SemiSupervise/bigwig/rollmean/DNase/E064-DNase.imputed.pval.signal.bigwig
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+Couldn't open /oak/stanford/groups/zihuai/SemiSupervise/bigwig/rollmean/H3K27ac/E060-H3K27ac.imputed.pval.signal.bigwig
+processing chromosomes
+processing chromosomes
+processing chromosomes
+Couldn't open /oak/stanford/groups/zihuai/SemiSupervise/bigwig/rollmean/H3K27ac/E064-H3K27ac.imputed.pval.signal.bigwig
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+Couldn't open /oak/stanford/groups/zihuai/SemiSupervise/bigwig/rollmean/H3K27me3/E060-H3K27me3.imputed.pval.signal.bigwig
+processing chromosomes
+processing chromosomes
+processing chromosomes
+Couldn't open /oak/stanford/groups/zihuai/SemiSupervise/bigwig/rollmean/H3K27me3/E064-H3K27me3.imputed.pval.signal.bigwig
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+Couldn't open /oak/stanford/groups/zihuai/SemiSupervise/bigwig/rollmean/H3K36me3/E060-H3K36me3.imputed.pval.signal.bigwig
+processing chromosomes
+processing chromosomes
+processing chromosomes
+Couldn't open /oak/stanford/groups/zihuai/SemiSupervise/bigwig/rollmean/H3K36me3/E064-H3K36me3.imputed.pval.signal.bigwig
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+Couldn't open /oak/stanford/groups/zihuai/SemiSupervise/bigwig/rollmean/H3K4me1/E060-H3K4me1.imputed.pval.signal.bigwig
+processing chromosomes
+processing chromosomes
+processing chromosomes
+Couldn't open /oak/stanford/groups/zihuai/SemiSupervise/bigwig/rollmean/H3K4me1/E064-H3K4me1.imputed.pval.signal.bigwig
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+Couldn't open /oak/stanford/groups/zihuai/SemiSupervise/bigwig/rollmean/H3K4me3/E060-H3K4me3.imputed.pval.signal.bigwig
+processing chromosomes
+processing chromosomes
+processing chromosomes
+Couldn't open /oak/stanford/groups/zihuai/SemiSupervise/bigwig/rollmean/H3K4me3/E064-H3K4me3.imputed.pval.signal.bigwig
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+Couldn't open /oak/stanford/groups/zihuai/SemiSupervise/bigwig/rollmean/H3K9ac/E060-H3K9ac.imputed.pval.signal.bigwig
+processing chromosomes
+processing chromosomes
+processing chromosomes
+Couldn't open /oak/stanford/groups/zihuai/SemiSupervise/bigwig/rollmean/H3K9ac/E064-H3K9ac.imputed.pval.signal.bigwig
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+Couldn't open /oak/stanford/groups/zihuai/SemiSupervise/bigwig/rollmean/H3K9me3/E060-H3K9me3.imputed.pval.signal.bigwig
+processing chromosomes
+processing chromosomes
+processing chromosomes
+Couldn't open /oak/stanford/groups/zihuai/SemiSupervise/bigwig/rollmean/H3K9me3/E064-H3K9me3.imputed.pval.signal.bigwig
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+processing chromosomes
+  0%|          | 0/1016 [00:00<?, ?it/s]  0%|          | 1/1016 [00:02<43:15,  2.56s/it]  0%|          | 2/1016 [00:04<38:02,  2.25s/it]  0%|          | 3/1016 [00:05<34:10,  2.02s/it]  0%|          | 4/1016 [00:07<31:36,  1.87s/it]  0%|          | 5/1016 [00:08<29:47,  1.77s/it]  1%|          | 6/1016 [00:10<28:11,  1.67s/it]  1%|          | 7/1016 [00:11<27:38,  1.64s/it]  1%|          | 8/1016 [00:13<26:49,  1.60s/it]  1%|          | 9/1016 [00:14<26:12,  1.56s/it]  1%|          | 10/1016 [00:16<26:18,  1.57s/it]  1%|          | 11/1016 [00:17<26:00,  1.55s/it]  1%|          | 12/1016 [00:19<25:56,  1.55s/it]  1%|▏         | 13/1016 [00:20<25:55,  1.55s/it]  1%|▏         | 14/1016 [00:22<25:52,  1.55s/it]  1%|▏         | 15/1016 [00:23<26:03,  1.56s/it]  2%|▏         | 16/1016 [00:25<25:41,  1.54s/it]  2%|▏         | 17/1016 [00:27<25:45,  1.55s/it]  2%|▏         | 18/1016 [00:28<25:42,  1.55s/it]  2%|▏         | 19/1016 [00:30<25:26,  1.53s/it]  2%|▏         | 20/1016 [00:31<25:17,  1.52s/it]  2%|▏         | 21/1016 [00:33<25:24,  1.53s/it]  2%|▏         | 22/1016 [00:34<25:02,  1.51s/it]  2%|▏         | 23/1016 [00:36<25:03,  1.51s/it]  2%|▏         | 24/1016 [00:37<25:15,  1.53s/it]  2%|▏         | 25/1016 [00:39<25:10,  1.52s/it]  3%|▎         | 26/1016 [00:40<25:06,  1.52s/it]  3%|▎         | 27/1016 [00:42<25:05,  1.52s/it]  3%|▎         | 28/1016 [00:43<24:57,  1.52s/it]  3%|▎         | 29/1016 [00:45<24:39,  1.50s/it]  3%|▎         | 30/1016 [00:46<24:47,  1.51s/it]  3%|▎         | 31/1016 [00:48<24:18,  1.48s/it]  3%|▎         | 32/1016 [00:49<24:23,  1.49s/it]  3%|▎         | 33/1016 [00:51<24:15,  1.48s/it]  3%|▎         | 34/1016 [00:52<23:52,  1.46s/it]  3%|▎         | 35/1016 [00:53<23:49,  1.46s/it]  4%|▎         | 36/1016 [00:55<23:35,  1.44s/it]  4%|▎         | 37/1016 [00:56<23:34,  1.45s/it]  4%|▎         | 38/1016 [00:58<23:55,  1.47s/it]  4%|▍         | 39/1016 [00:59<24:05,  1.48s/it]  4%|▍         | 40/1016 [01:01<24:29,  1.51s/it]  4%|▍         | 41/1016 [01:02<24:47,  1.53s/it]  4%|▍         | 42/1016 [01:04<24:51,  1.53s/it]  4%|▍         | 43/1016 [01:06<24:36,  1.52s/it]  4%|▍         | 44/1016 [01:07<24:43,  1.53s/it]  4%|▍         | 45/1016 [01:09<24:25,  1.51s/it]  5%|▍         | 46/1016 [01:10<24:24,  1.51s/it]  5%|▍         | 47/1016 [01:12<24:29,  1.52s/it]  5%|▍         | 48/1016 [01:13<24:35,  1.52s/it]  5%|▍         | 49/1016 [01:15<24:17,  1.51s/it]  5%|▍         | 50/1016 [01:16<24:15,  1.51s/it]  5%|▌         | 51/1016 [01:18<24:35,  1.53s/it]  5%|▌         | 52/1016 [01:19<24:14,  1.51s/it]  5%|▌         | 53/1016 [01:21<24:12,  1.51s/it]  5%|▌         | 54/1016 [01:22<24:36,  1.53s/it]  5%|▌         | 55/1016 [01:24<24:45,  1.55s/it]  6%|▌         | 56/1016 [01:25<24:20,  1.52s/it]  6%|▌         | 57/1016 [01:27<24:11,  1.51s/it]  6%|▌         | 58/1016 [01:28<23:49,  1.49s/it]  6%|▌         | 59/1016 [01:30<23:47,  1.49s/it]  6%|▌         | 60/1016 [01:31<23:22,  1.47s/it]  6%|▌         | 61/1016 [01:33<23:33,  1.48s/it]  6%|▌         | 62/1016 [01:34<23:24,  1.47s/it]  6%|▌         | 63/1016 [01:36<23:29,  1.48s/it]  6%|▋         | 64/1016 [01:37<23:31,  1.48s/it]  6%|▋         | 65/1016 [01:39<23:30,  1.48s/it]  6%|▋         | 66/1016 [01:40<23:47,  1.50s/it]  7%|▋         | 67/1016 [01:42<23:55,  1.51s/it]  7%|▋         | 68/1016 [01:43<24:23,  1.54s/it]  7%|▋         | 69/1016 [01:45<24:27,  1.55s/it]  7%|▋         | 70/1016 [01:46<24:13,  1.54s/it]  7%|▋         | 71/1016 [01:48<23:50,  1.51s/it]  7%|▋         | 72/1016 [01:49<23:29,  1.49s/it]  7%|▋         | 73/1016 [01:51<23:48,  1.51s/it]  7%|▋         | 74/1016 [01:52<23:58,  1.53s/it]  7%|▋         | 75/1016 [01:54<24:05,  1.54s/it]  7%|▋         | 76/1016 [01:55<24:19,  1.55s/it]  8%|▊         | 77/1016 [01:57<23:57,  1.53s/it]  8%|▊         | 78/1016 [01:58<23:50,  1.53s/it]  8%|▊         | 79/1016 [02:00<23:32,  1.51s/it]  8%|▊         | 80/1016 [02:01<23:05,  1.48s/it]  8%|▊         | 81/1016 [02:03<23:02,  1.48s/it]  8%|▊         | 82/1016 [02:04<23:07,  1.49s/it]  8%|▊         | 83/1016 [02:06<23:14,  1.49s/it]  8%|▊         | 84/1016 [02:08<24:01,  1.55s/it]  8%|▊         | 85/1016 [02:09<23:49,  1.54s/it]  8%|▊         | 86/1016 [02:11<23:46,  1.53s/it]  9%|▊         | 87/1016 [02:12<23:40,  1.53s/it]  9%|▊         | 88/1016 [02:14<23:14,  1.50s/it]  9%|▉         | 89/1016 [02:15<23:15,  1.51s/it]  9%|▉         | 90/1016 [02:17<23:06,  1.50s/it]  9%|▉         | 91/1016 [02:18<23:07,  1.50s/it]  9%|▉         | 92/1016 [02:20<23:47,  1.55s/it]  9%|▉         | 93/1016 [02:21<24:04,  1.57s/it]  9%|▉         | 94/1016 [02:23<24:15,  1.58s/it]  9%|▉         | 95/1016 [02:25<24:36,  1.60s/it]  9%|▉         | 96/1016 [02:26<24:12,  1.58s/it] 10%|▉         | 97/1016 [02:28<23:40,  1.55s/it] 10%|▉         | 98/1016 [02:29<23:18,  1.52s/it] 10%|▉         | 99/1016 [02:31<23:16,  1.52s/it] 10%|▉         | 100/1016 [02:32<23:39,  1.55s/it] 10%|▉         | 101/1016 [02:34<23:19,  1.53s/it] 10%|█         | 102/1016 [02:35<23:02,  1.51s/it] 10%|█         | 103/1016 [02:37<23:34,  1.55s/it] 10%|█         | 104/1016 [02:38<23:46,  1.56s/it] 10%|█         | 105/1016 [02:40<23:06,  1.52s/it] 10%|█         | 106/1016 [02:41<22:52,  1.51s/it] 11%|█         | 107/1016 [02:43<22:56,  1.51s/it] 11%|█         | 108/1016 [02:44<22:42,  1.50s/it] 11%|█         | 109/1016 [02:46<22:34,  1.49s/it] 11%|█         | 110/1016 [02:47<22:35,  1.50s/it] 11%|█         | 111/1016 [02:49<22:45,  1.51s/it] 11%|█         | 112/1016 [02:50<22:54,  1.52s/it] 11%|█         | 113/1016 [02:52<23:09,  1.54s/it] 11%|█         | 114/1016 [02:53<23:28,  1.56s/it] 11%|█▏        | 115/1016 [02:55<23:21,  1.56s/it] 11%|█▏        | 116/1016 [02:57<23:20,  1.56s/it] 12%|█▏        | 117/1016 [02:58<23:16,  1.55s/it] 12%|█▏        | 118/1016 [03:00<22:57,  1.53s/it] 12%|█▏        | 119/1016 [03:01<23:01,  1.54s/it] 12%|█▏        | 120/1016 [03:03<22:35,  1.51s/it] 12%|█▏        | 121/1016 [03:04<22:28,  1.51s/it] 12%|█▏        | 122/1016 [03:06<22:31,  1.51s/it] 12%|█▏        | 123/1016 [03:07<23:10,  1.56s/it] 12%|█▏        | 124/1016 [03:09<22:42,  1.53s/it] 12%|█▏        | 125/1016 [03:10<22:58,  1.55s/it] 12%|█▏        | 126/1016 [03:12<23:20,  1.57s/it] 12%|█▎        | 127/1016 [03:14<23:27,  1.58s/it] 13%|█▎        | 128/1016 [03:15<23:14,  1.57s/it] 13%|█▎        | 129/1016 [03:17<22:56,  1.55s/it] 13%|█▎        | 130/1016 [03:18<23:11,  1.57s/it] 13%|█▎        | 131/1016 [03:20<23:22,  1.59s/it] 13%|█▎        | 132/1016 [03:21<23:21,  1.58s/it] 13%|█▎        | 133/1016 [03:23<23:14,  1.58s/it] 13%|█▎        | 134/1016 [03:25<23:00,  1.56s/it] 13%|█▎        | 135/1016 [03:26<22:43,  1.55s/it] 13%|█▎        | 136/1016 [03:28<22:37,  1.54s/it] 13%|█▎        | 137/1016 [03:29<22:30,  1.54s/it] 14%|█▎        | 138/1016 [03:31<22:43,  1.55s/it] 14%|█▎        | 139/1016 [03:32<23:03,  1.58s/it] 14%|█▍        | 140/1016 [03:34<23:08,  1.59s/it] 14%|█▍        | 141/1016 [03:35<22:45,  1.56s/it] 14%|█▍        | 142/1016 [03:37<23:16,  1.60s/it] 14%|█▍        | 143/1016 [03:39<22:56,  1.58s/it] 14%|█▍        | 144/1016 [03:40<22:40,  1.56s/it] 14%|█▍        | 145/1016 [03:42<22:17,  1.54s/it] 14%|█▍        | 146/1016 [03:43<22:25,  1.55s/it] 14%|█▍        | 147/1016 [03:45<22:32,  1.56s/it] 15%|█▍        | 148/1016 [03:46<22:21,  1.54s/it] 15%|█▍        | 149/1016 [03:48<22:31,  1.56s/it] 15%|█▍        | 150/1016 [03:49<22:29,  1.56s/it] 15%|█▍        | 151/1016 [03:51<22:33,  1.56s/it] 15%|█▍        | 152/1016 [03:53<22:32,  1.57s/it] 15%|█▌        | 153/1016 [03:54<22:23,  1.56s/it] 15%|█▌        | 154/1016 [03:56<22:17,  1.55s/it] 15%|█▌        | 155/1016 [03:57<22:49,  1.59s/it] 15%|█▌        | 156/1016 [03:59<22:30,  1.57s/it] 15%|█▌        | 157/1016 [04:00<22:27,  1.57s/it] 16%|█▌        | 158/1016 [04:02<22:09,  1.55s/it] 16%|█▌        | 159/1016 [04:04<22:06,  1.55s/it] 16%|█▌        | 160/1016 [04:05<21:58,  1.54s/it] 16%|█▌        | 161/1016 [04:07<22:49,  1.60s/it] 16%|█▌        | 162/1016 [04:08<22:30,  1.58s/it] 16%|█▌        | 163/1016 [04:10<22:26,  1.58s/it] 16%|█▌        | 164/1016 [04:11<22:30,  1.58s/it] 16%|█▌        | 165/1016 [04:13<22:45,  1.60s/it] 16%|█▋        | 166/1016 [04:15<22:57,  1.62s/it] 16%|█▋        | 167/1016 [04:16<22:35,  1.60s/it] 17%|█▋        | 168/1016 [04:18<22:11,  1.57s/it] 17%|█▋        | 169/1016 [04:19<21:48,  1.55s/it] 17%|█▋        | 170/1016 [04:21<21:40,  1.54s/it] 17%|█▋        | 171/1016 [04:22<21:39,  1.54s/it] 17%|█▋        | 172/1016 [04:24<21:47,  1.55s/it] 17%|█▋        | 173/1016 [04:26<21:50,  1.55s/it] 17%|█▋        | 174/1016 [04:27<21:42,  1.55s/it] 17%|█▋        | 175/1016 [04:29<21:53,  1.56s/it] 17%|█▋        | 176/1016 [04:30<22:09,  1.58s/it] 17%|█▋        | 177/1016 [04:32<22:41,  1.62s/it] 18%|█▊        | 178/1016 [04:34<22:45,  1.63s/it] 18%|█▊        | 179/1016 [04:35<22:28,  1.61s/it] 18%|█▊        | 180/1016 [04:37<23:21,  1.68s/it] 18%|█▊        | 181/1016 [04:39<22:56,  1.65s/it] 18%|█▊        | 182/1016 [04:40<22:53,  1.65s/it] 18%|█▊        | 183/1016 [04:42<22:44,  1.64s/it] 18%|█▊        | 184/1016 [04:44<22:41,  1.64s/it] 18%|█▊        | 185/1016 [04:45<22:22,  1.62s/it] 18%|█▊        | 186/1016 [04:47<22:30,  1.63s/it] 18%|█▊        | 187/1016 [04:48<22:47,  1.65s/it] 19%|█▊        | 188/1016 [04:50<22:38,  1.64s/it] 19%|█▊        | 189/1016 [04:52<22:15,  1.62s/it] 19%|█▊        | 190/1016 [04:53<22:04,  1.60s/it] 19%|█▉        | 191/1016 [04:55<21:44,  1.58s/it] 19%|█▉        | 192/1016 [04:56<21:40,  1.58s/it] 19%|█▉        | 193/1016 [04:58<21:39,  1.58s/it] 19%|█▉        | 194/1016 [05:00<22:01,  1.61s/it] 19%|█▉        | 195/1016 [05:01<22:15,  1.63s/it] 19%|█▉        | 196/1016 [05:03<22:24,  1.64s/it] 19%|█▉        | 197/1016 [05:05<22:35,  1.66s/it] 19%|█▉        | 198/1016 [05:07<23:47,  1.75s/it] 20%|█▉        | 199/1016 [05:08<23:06,  1.70s/it] 20%|█▉        | 200/1016 [05:10<22:30,  1.66s/it] 20%|█▉        | 201/1016 [05:11<22:19,  1.64s/it] 20%|█▉        | 202/1016 [05:13<22:25,  1.65s/it] 20%|█▉        | 203/1016 [05:15<22:17,  1.65s/it] 20%|██        | 204/1016 [05:16<22:06,  1.63s/it] 20%|██        | 205/1016 [05:18<21:38,  1.60s/it] 20%|██        | 206/1016 [05:19<21:26,  1.59s/it] 20%|██        | 207/1016 [05:21<21:39,  1.61s/it] 20%|██        | 208/1016 [05:23<21:34,  1.60s/it] 21%|██        | 209/1016 [05:24<21:10,  1.57s/it] 21%|██        | 210/1016 [05:26<21:01,  1.56s/it] 21%|██        | 211/1016 [05:27<20:54,  1.56s/it] 21%|██        | 212/1016 [05:29<20:44,  1.55s/it] 21%|██        | 213/1016 [05:30<20:50,  1.56s/it] 21%|██        | 214/1016 [05:32<21:19,  1.60s/it] 21%|██        | 215/1016 [05:34<21:41,  1.62s/it]/var/spool/slurmd/job61998085/slurm_script: line 15: 107656 Killed                  python setup_project_data.py -p mpra_e116 -n -npr 40,25 --split train-test
+slurmstepd: error: Detected 1 oom-kill event(s) in step 61998085.batch cgroup. Some of your processes may have been killed by the cgroup out-of-memory handler.

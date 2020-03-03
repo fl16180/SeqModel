@@ -34,7 +34,9 @@ def roadmap_neighbors_to_mat(ref_bed, neighbors, outpath):
     neighbors = pd.merge(ref_bed[['chr', 'pos', 'rs']], neighbors, on='rs')
 
     # pivot dataframe on neighbors to get wide form
-    features = get_roadmap_col_order(order='marker')
+    #features = get_roadmap_col_order(order='marker')
+    features = [f'{x}-E116' for x in ROADMAP_MARKERS]
+
     tmp = pd.pivot(neighbors, index='rs', values=features, columns='N')
     tmp.fillna(tmp.mean(), inplace=True)
 
@@ -56,7 +58,9 @@ def pull_roadmap_with_neighbors(bedfile, outpath,
                                 n_neighbor=40, sample_res=25):
     neighbor_bed = add_bed_neighbors(bedfile, n_neighbor, sample_res)
 
-    col_order = get_roadmap_col_order(order='marker')
+    # col_order = get_roadmap_col_order(order='marker')
+    col_order = [f'{x}-E116' for x in ROADMAP_MARKERS]
+
     pull_roadmap_features(neighbor_bed, outpath, col_order, keep_rs_col=True)
 
 

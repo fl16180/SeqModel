@@ -7,26 +7,34 @@ import os
 import pandas as pd
 from tqdm import tqdm
 import re
+import numpy as np
+
+import dask
+from dask import delayed
+import dask.dataframe as dd
 
 from constants import *
 
 
 def pull_roadmap_features(bedfile, outpath, col_order,
-                          feature_dir=TMP_DIR, keep_rs_col=False):
+                          feature_dir=TMP_DIR,
+                          pull_bigwigs=False,
+                          keep_rs_col=False):
     """ For each ROADMAP marker, execute bigwig pulls for each tissue
     """
-    # clear tmp directory
-    for f in os.listdir(feature_dir):
-        os.remove(feature_dir / f)
+    if pull_bigwigs:
+        # # clear tmp directory
+        # for f in os.listdir(feature_dir):
+        #     os.remove(feature_dir / f)
 
-    # save temporary bedfile with correct input format
-    bedfile['chr'] = bedfile['chr'].map(lambda x: f'chr{x}')
-    bedfile.to_csv(TMP_DIR / 'tmp.bed', sep='\t', header=False, index=False)
+        # save temporary bedfile with correct input format
+        bedfile['chr'] = bedfile['chr'].map(lambda x: f'chr{x}')
+        bedfile.to_csv(TMP_DIR / 'tmp.bed', sep='\t', header=False, index=False)
 
-    # query each feature from bigwig
-    for marker in ROADMAP_MARKERS:
-        for i in range(1, 130):
-            pull_command(marker, i, TMP_DIR / 'tmp.bed')
+        # query each feature from bigwig
+        for marker in ROADMAP_MARKERS:
+            for i in range(1, 130):
+                pull_command(marker, i, TMP_DIR / 'tmp.bed')
 
     # stack features into dataframe
     compiled = features_to_csv(feature_dir)
@@ -66,11 +74,12 @@ def features_to_csv(feature_dir=TMP_DIR):
     """ Post-extraction, combine temporary outputs into a DataFrame and save
     to csv.
     """
-    features = [x for x in os.listdir(feature_dir) if re.search('E\d{3}$', x)]
+    #features = [x for x in os.listdir(feature_dir) if re.search('E\d{3}$', x)]
+    features = [x for x in os.listdir(feature_dir) if re.search('E116$', x)]
 
     cols = []
     for fn in tqdm(features):
-        tmp = pd.read_csv(feature_dir / f'./{fn}', sep='\t',
+        tmp = pd.read_csv(feature_dir / f'{fn}', sep='\t',
                           names=['variant', 'c1', 'c2', 'v1', 'v2', f'{fn}'])
         tmp = tmp.drop(['c1','c2','v1','v2'], axis=1)
         cols.append(tmp)
@@ -78,3 +87,28 @@ def features_to_csv(feature_dir=TMP_DIR):
     df = pd.concat(cols, axis=1)
     df = df.loc[:, ~df.columns.duplicated()]
     return df
+
+
+def dask_features_to_csv(feature_dir=TMP_DIR):
+
+    def read_label_feature(fn):
+        tmp = pd.read_csv(feature_dir / f'{fn}', sep='\t',
+                            names=['variant', 'c1', 'c2', 'v1', 'v2', f'{fn}'])
+        tmp = tmp.drop(['c1','c2','v1','v2'], axis=1)
+        tmp['variant'] = tmp['variant'].astype(str)
+        tmp[f'{fn}'] = tmp[f'{fn}'].astype(np.float32)
+        tmp.set_index('variant', drop=True, inplace=True)
+        return tmp
+
+    df = dd.read_csv(os.path.join(feature_dir, '*-E*'), sep='\t',
+                    names=['variant', 'c1', 'c2', 'v1', 'v2', 'data'],
+                    include_path_column=True)
+    df['path'] = df['path'].map(lambda x: Path(x).name)
+    df = df.drop(['c1', 'c2', 'v1', 'v2'], axis=1)
+    dd.pivot_table(df, index='variant', values='data', columns='path')
+
+
+# features = [x for x in os.listdir(feature_dir) if re.search('E\d{3}$', x)]
+# dfs = [delayed(read_label_feature)(fn) for fn in features]
+
+# dd.from_delayed

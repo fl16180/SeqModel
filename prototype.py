@@ -15,28 +15,21 @@ from datasets.data_loader import *
 from datasets.processor import Processor
 
 
-project = 'mpra_deseq2'
+project = 'mpra_e116'
 project_dir = PROCESSED_DIR / project
 
-train_df = load_test_set(project, make_new=True)
-# print(train_df.shape)
+train_df = load_train_set(project, make_new=True)
+test_df = load_test_set(project, make_new=True)
 
-# miss = train_df.isna().sum() / len(train_df)
-# print(miss[miss > 0.4])
-# import sys; sys.exit()
-proc = Processor(project)
-train_df = proc.fit_transform(train_df, na_thresh=0.05)
+test_df = load_test_set('mpra_deseq2', make_new=True)
 
-X_train = train_df.drop(['chr', 'pos', 'Label'], axis=1).astype(np.float32)
-y_train = train_df['Label'].astype(np.int64)
+# proc = Processor(project)
+# train_df = proc.fit_transform(train_df, na_thresh=0.05)
 
-perm = np.random.permutation(X_train.shape[0])
-X_test = np.array(X_train)[perm[20000:]]
-y_test = np.array(y_train)[perm[20000:]]
-X_train = np.array(X_train)[perm[:20000]]
-y_train = np.array(y_train)[perm[:20000]]
+# X_train = train_df.drop(['chr', 'pos', 'Label'], axis=1).astype(np.float32)
+# y_train = train_df['Label'].astype(np.int64)
 
-from sklearn.ensemble import RandomForestRegressor
+
 
 # test_df = load_test_set(project, make_new=True)
 # test_df = load_test_set('mpra_deseq2', make_new=True)
@@ -50,28 +43,28 @@ from sklearn.ensemble import RandomForestRegressor
 
 
 
-from sklearn.linear_model import LogisticRegression
-# lr = LogisticRegression(max_iter=10000, C=10.0)
-lr = RandomForestRegressor()
-lr.fit(X_train, y_train)
-# p_test = lr.predict_proba(X_test)
-p_test = lr.predict(X_test)
+# from sklearn.linear_model import LogisticRegression
+# # lr = LogisticRegression(max_iter=10000, C=10.0)
+# lr = RandomForestRegressor()
+# lr.fit(X_train, y_train)
+# # p_test = lr.predict_proba(X_test)
+# p_test = lr.predict(X_test)
 
-from scipy.stats import pearsonr
-print(pearsonr(p_test, y_test))
+# from scipy.stats import pearsonr
+# print(pearsonr(p_test, y_test))
 
-thresh = 1e-4
-y_score = np.zeros(len(y_test))
-y_score[y_test < thresh] = 1
+# thresh = 1e-4
+# y_score = np.zeros(len(y_test))
+# y_score[y_test < thresh] = 1
 
-# y_pred = np.zeros(len(y_test))
-# p_test[p_test < thresh] = 1
+# # y_pred = np.zeros(len(y_test))
+# # p_test[p_test < thresh] = 1
 
 
-from sklearn.metrics import plot_roc_curve, roc_auc_score
-from sklearn.metrics import plot_precision_recall_curve, average_precision_score
-print(roc_auc_score(y_score, p_test[:, 1]))
-print(average_precision_score(y_score, p_test[:, 1]))
+# from sklearn.metrics import plot_roc_curve, roc_auc_score
+# from sklearn.metrics import plot_precision_recall_curve, average_precision_score
+# print(roc_auc_score(y_score, p_test[:, 1]))
+# print(average_precision_score(y_score, p_test[:, 1]))
 
 
 

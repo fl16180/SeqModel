@@ -21,7 +21,10 @@ def pull_roadmap_features(bedfile, feature_dir=TMP_DIR):
     """
     # clear tmp directory
     for f in os.listdir(feature_dir):
-        os.remove(feature_dir / f)
+        try:
+            os.remove(feature_dir / f)
+        except IsADirectoryError:
+            pass
 
     # save temporary bedfile with correct input format
     bedfile['chr'] = bedfile['chr'].map(lambda x: f'chr{x}')

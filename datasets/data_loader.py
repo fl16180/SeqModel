@@ -19,7 +19,8 @@ def load_train_set(project, datasets=['roadmap', 'eigen', 'regbase'], make_new=T
                 df.drop('ref', axis=1, inplace=True)
             train = pd.merge(train, df, on=['chr', 'pos'], suffixes=('', '__y'))
             train.drop(list(train.filter(regex='__y$')), axis=1, inplace=True)
-
+        
+        train.drop_duplicates(['chr', 'pos'], inplace=True)
         train.to_csv(proj_loc / 'matrix_train.csv', index=False)
     return train
 
@@ -42,5 +43,6 @@ def load_test_set(project, datasets=['roadmap', 'eigen', 'regbase'], make_new=Tr
             test = pd.merge(test, df, on=['chr', 'pos'], suffixes=('', '__y'))
             test.drop(list(test.filter(regex='__y$')), axis=1, inplace=True)
 
+        test.drop_duplicates(['chr', 'pos'], inplace=True)
         test.to_csv(proj_loc / 'matrix_test.csv', index=False)
     return test

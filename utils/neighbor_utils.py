@@ -12,7 +12,7 @@ def add_bed_neighbors(bed, n_neighbor=40, sample_res=25):
     """
     nrange = n_neighbor * sample_res
     neighbors = np.arange(-nrange, nrange + 1, sample_res)
-    rs_tag = np.array([f';N{x}' for x in neighbors])
+    rs_tag = np.array([f';{x}' for x in neighbors])
 
     chr_n = np.repeat(bed['chr'].values[:, None], len(neighbors), axis=1)
     pos_n = bed['pos'].values[:, None] + neighbors[None, :]

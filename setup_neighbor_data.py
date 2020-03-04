@@ -19,14 +19,16 @@ def setup(args):
     bedfile = load_bed_file(args.project)
 
     # assign new variant name for data merging later
-    bedfile['rs'] = bedfile['chr'].map(str) + ':' + bedfile['pos'].map(str)
+    bedfile['rs'] = bedfile['chr'].map(str) + '-' + bedfile['pos'].map(str)
+    bedfile.drop_duplicates('rs', inplace=True)
 
     # extract roadmap data from bigwig files
     if args.extract:
         neighbor_bed = add_bed_neighbors(bedfile, n_neigh, sample_res)
+        print(neighbor_bed.head())
         pull_roadmap_features(neighbor_bed)
 
-
+    # roadmap feature ordering (useful for organizing CNN)
     if args.tissue == 'all':
         features = get_roadmap_col_order(order='marker')
     else:

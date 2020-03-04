@@ -16,26 +16,26 @@ import dask.dataframe as dd
 from constants import *
 
 
-def pull_roadmap_features(bedfile, outpath, col_order,
-                          feature_dir=TMP_DIR,
-                          pull_bigwigs=False,
-                          keep_rs_col=False):
+def pull_roadmap_features(bedfile, feature_dir=TMP_DIR):
     """ For each ROADMAP marker, execute bigwig pulls for each tissue
     """
-    if pull_bigwigs:
-        # # clear tmp directory
-        # for f in os.listdir(feature_dir):
-        #     os.remove(feature_dir / f)
+    # clear tmp directory
+    for f in os.listdir(feature_dir):
+        os.remove(feature_dir / f)
 
-        # save temporary bedfile with correct input format
-        bedfile['chr'] = bedfile['chr'].map(lambda x: f'chr{x}')
-        bedfile.to_csv(TMP_DIR / 'tmp.bed', sep='\t', header=False, index=False)
+    # save temporary bedfile with correct input format
+    bedfile['chr'] = bedfile['chr'].map(lambda x: f'chr{x}')
+    bedfile.to_csv(feature_dir / 'tmp.bed', sep='\t', header=False, index=False)
 
-        # query each feature from bigwig
-        for marker in ROADMAP_MARKERS:
-            for i in range(1, 130):
-                pull_command(marker, i, TMP_DIR / 'tmp.bed')
+    # query each feature from bigwig
+    for marker in ROADMAP_MARKERS:
+        for i in range(1, 130):
+            pull_command(marker, i, TMP_DIR / 'tmp.bed')
+    return True
 
+
+def compile_roadmap_features(bedfile, outpath, col_order,
+                             feature_dir=TMP_DIR, keep_rs_col=False):
     # stack features into dataframe
     compiled = features_to_csv(feature_dir)
     compiled = pd.merge(bedfile, compiled, left_on='rs', right_on='variant')
@@ -90,7 +90,8 @@ def features_to_csv(feature_dir=TMP_DIR):
 
 
 def dask_features_to_csv(feature_dir=TMP_DIR):
-
+    """ dask implementation can wait, there will be different implementation
+    for neighbors"""
     def read_label_feature(fn):
         tmp = pd.read_csv(feature_dir / f'{fn}', sep='\t',
                             names=['variant', 'c1', 'c2', 'v1', 'v2', f'{fn}'])
@@ -107,8 +108,7 @@ def dask_features_to_csv(feature_dir=TMP_DIR):
     df = df.drop(['c1', 'c2', 'v1', 'v2'], axis=1)
     dd.pivot_table(df, index='variant', values='data', columns='path')
 
+    # features = [x for x in os.listdir(feature_dir) if re.search('E\d{3}$', x)]
+    # dfs = [delayed(read_label_feature)(fn) for fn in features]
 
-# features = [x for x in os.listdir(feature_dir) if re.search('E\d{3}$', x)]
-# dfs = [delayed(read_label_feature)(fn) for fn in features]
-
-# dd.from_delayed
+    # dd.from_delayed

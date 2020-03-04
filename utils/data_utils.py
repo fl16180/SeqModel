@@ -5,7 +5,7 @@ import io, subprocess
 from tqdm import tqdm
 # from sklearn.utils import resample
 
-from utils.bigwig_utils import pull_roadmap_features
+from utils.bigwig_utils import pull_roadmap_features, compile_roadmap_features
 from constants import *
 
 
@@ -131,7 +131,7 @@ def extract_roadmap(bedfile, outpath, project, get_new=True):
     if os.path.exists(outpath):
         os.remove(outpath)
 
-    col_order = get_roadmap_col_order()
+    col_order = get_roadmap_col_order(order='tissue')
 
     if not get_new and project in STANDARD_MPRA:
         data = load_mpra_data(project)
@@ -139,7 +139,9 @@ def extract_roadmap(bedfile, outpath, project, get_new=True):
         data.to_csv(outpath, sep='\t', index=False)
 
     else:
-        pull_roadmap_features(bedfile, outpath, col_order)
+        success = pull_roadmap_features(bedfile)
+        if success:
+            compile_roadmap_features(bedfile, outpath, col_order)
 
 
 def clean_eigen_data(filename):

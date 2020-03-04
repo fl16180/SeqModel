@@ -7,6 +7,9 @@ from utils.data_utils import get_roadmap_col_order
 
 
 def add_bed_neighbors(bed, n_neighbor=40, sample_res=25):
+    """ Takes a dataframe bedfile and adds entries for neighboring
+    variants for each variant in the dataset.
+    """
     nrange = n_neighbor * sample_res
     neighbors = np.arange(-nrange, nrange + 1, sample_res)
     rs_tag = np.array([f';N{x}' for x in neighbors])
@@ -21,6 +24,34 @@ def add_bed_neighbors(bed, n_neighbor=40, sample_res=25):
                               'pos_end': pos_end_n.flatten(),
                               'rs': rs_n.flatten()})
     return neigh_bed
+
+
+def process_roadmap_neighbors():
+    return
+
+def pull_roadmap_neighbors():
+    success = pull_roadmap_features(neighbor_bed)
+
+
+    # figure out column ordering
+    col_order = ['chr', 'pos'] + col_order
+    if keep_rs_col:
+        compiled.drop(['variant', 'pos_end'], axis=1, inplace=True)
+        col_order = col_order + ['rs']
+    else:
+        compiled.drop(['rs', 'variant', 'pos_end'], axis=1, inplace=True)
+
+    compiled = compiled.loc[:, col_order]
+    compiled.to_csv(outpath, sep='\t', index=False)
+
+def pull_roadmap_with_neighbors(bedfile, outpath,
+                                n_neighbor=40, sample_res=25):
+
+    # col_order = get_roadmap_col_order(order='marker')
+    col_order = [f'{x}-E116' for x in ROADMAP_MARKERS]
+
+    pull_roadmap_features(neighbor_bed, outpath, col_order, keep_rs_col=True)
+
 
 
 def roadmap_neighbors_to_mat(ref_bed, neighbors, outpath):
@@ -52,16 +83,6 @@ def roadmap_neighbors_to_mat(ref_bed, neighbors, outpath):
     # store feature matrix and chr/pos reference array
     np.save(outpath, feat_mat)
     np.save(outpath.with_suffix('.ref'), ref_bed[['chr', 'pos']].values)
-
-
-def pull_roadmap_with_neighbors(bedfile, outpath,
-                                n_neighbor=40, sample_res=25):
-    neighbor_bed = add_bed_neighbors(bedfile, n_neighbor, sample_res)
-
-    # col_order = get_roadmap_col_order(order='marker')
-    col_order = [f'{x}-E116' for x in ROADMAP_MARKERS]
-
-    pull_roadmap_features(neighbor_bed, outpath, col_order, keep_rs_col=True)
 
 
 if __name__ == '__main__':

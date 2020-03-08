@@ -41,7 +41,7 @@ class Processor:
         df[self.fit_feats] = self.scaler.transform(df[self.fit_feats])
         return df
 
-    def save(self):
+    def save(self, name):
         path = PROCESSED_DIR / self.project / 'models'
         if not os.path.exists(path):
             os.mkdir(path)
@@ -51,12 +51,12 @@ class Processor:
                    'feats': self.fit_feats,
                    'scaler': self.scaler}
 
-        with open(path / 'processor.pkl', 'wb') as f:
+        with open(path / f'{name}_processor.pkl', 'wb') as f:
             pkl.dump(payload, f)
 
-    def load(self):
+    def load(self, name):
         path = PROCESSED_DIR / self.project / 'models'
-        with open(path / 'processor.pkl', 'rb') as f:
+        with open(path / f'{name}_processor.pkl', 'rb') as f:
             payload = pkl.load(f)
             self.omit_cols = payload['omit']
             self.col_means = payload['means']

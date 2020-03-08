@@ -1,6 +1,3 @@
-import torch
-from torch import nn
-import torch.nn.functional as F
 
 import numpy as np
 
@@ -71,10 +68,6 @@ test_df = load_test_set('mpra_deseq2', make_new=True)
 # train_df.to_csv('e116_train.csv', index=False)
 
 
-
-
-
-
 # class MpraNet(nn.Module):
 #     def __init__(self, n_input, n_units, nonlin=torch.sigmoid, dropout=0.4):
 #         super(MpraNet, self).__init__()
@@ -94,26 +87,6 @@ test_df = load_test_set('mpra_deseq2', make_new=True)
 #         return X
 
 
-# class CostSensitiveLoss(nn.Module):
-
-#     def __init__(self, FN=1., FP=1., TN=0.0, TP=0.0):
-#         super().__init__()
-#         self.FN = FN
-#         self.FP = FP
-#         self.TN = TN
-#         self.TP = TP
-
-#     def forward(self, input, target):
-#         input = torch.log(input)
-#         predict_0 = input[:, 0]
-#         predict_1 = input[:, 1]
-
-#         cost = target * predict_1 * self.FN
-#         cost += (1 - target) * predict_0 * self.FP
-# #         cost += predict_0 * self.TP
-# #         cost += predict_1 * self.TN
-
-#         return -1 * torch.mean(cost)
 
 # net = NeuralNetClassifier(
 #     MpraNet,

@@ -21,6 +21,9 @@ MPRA_TABLE = {
     'mpra_nova': ('1KG_bartender_novaSeq_DESeq2_pvals.txt', '')
 }
 
+# project choices for all argparsers
+PROJ_CHOICES = ['mpra_e116', 'mpra_e118', 'mpra_e123', 'mpra_nova']
+
 # experiments with ROADMAP data included
 STANDARD_MPRA = ('mpra_e116', 'mpra_e118', 'mpra_e123')
 
@@ -29,3 +32,5 @@ BIGWIG_TAIL = '.imputed.pval.signal.bigwig'
 ROADMAP_MARKERS = ['DNase', 'H3K27ac', 'H3K27me3', 'H3K36me3',
                    'H3K4me1', 'H3K4me3', 'H3K9ac', 'H3K9me3']
 ROADMAP_COL_ORDER_REF = 'mpra_e116'
+
+# consider clipping inputs? most roadmap < 0.5, but 2% above 10, top value over 100

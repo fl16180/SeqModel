@@ -1,13 +1,12 @@
 import argparse
 import os
 import pandas as pd
+
+from constants import PROCESSED_DIR, PROJ_CHOICES
 from utils.bed_utils import get_bed_from_mpra, load_bed_file, save_bed_file
 from utils.data_utils import *
 from utils.neighbor_utils import pull_roadmap_with_neighbors, roadmap_neighbors_to_mat
-from constants import PROCESSED_DIR
 
-
-PROJ_CHOICES = ['mpra_e116', 'mpra_e118', 'mpra_e123', 'mpra_nova']
 SPLIT_CHOICES = [None, 'train-test', 'test']
 
 

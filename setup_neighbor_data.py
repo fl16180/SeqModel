@@ -1,14 +1,11 @@
 import argparse
 
-from constants import *
+from constants import PROCESSED_DIR, PROJ_CHOICES
 from utils.bed_utils import load_bed_file
-from utils.data_utils import get_roadmap_col_order
 from utils.bigwig_utils import pull_roadmap_features
-from utils.neighbor_utils import add_bed_neighbors, process_roadmap_neighbors
+from utils.neighbor_utils import reshape_roadmap_files, add_bed_neighbors, process_roadmap_neighbors
 from datasets.data_loader import *
 
-
-PROJ_CHOICES = ['mpra_e116', 'mpra_e118', 'mpra_e123', 'mpra_nova']
 SPLIT_CHOICES = [None, 'train-test', 'test']
 
 
@@ -25,36 +22,31 @@ def setup(args):
     # extract roadmap data from bigwig files
     if args.extract:
         neighbor_bed = add_bed_neighbors(bedfile, n_neigh, sample_res)
-        print(neighbor_bed.head())
         pull_roadmap_features(neighbor_bed)
-
-    # roadmap feature ordering (useful for organizing CNN)
-    if args.tissue == 'all':
-        features = get_roadmap_col_order(order='marker')
-    else:
-        features = [f'{x}-{args.tissue}' for x in ROADMAP_MARKERS]
+        reshape_roadmap_files()
 
     # prepare roadmap data into train and test sets corresponding to train/test
-    # matrices generated from other datasets
-    if args.split == 'train_test':
+    # dataframes generated from other datasets
+    if args.split == 'train-test':
         train_df = load_train_set(args.project,
                                   datasets=['eigen', 'regbase'],
                                   make_new=True)
-        outpath = project_dir / f'train_neighbor_{n_neigh}_{sample_res}'
-        process_roadmap_neighbors(train_df, outpath, features)
 
         test_df = load_test_set(args.project,
                                 datasets=['eigen', 'regbase'],
                                 make_new=True)
-        outpath = project_dir / f'test_neighbor_{n_neigh}_{sample_res}'
-        process_roadmap_neighbors(test_df, outpath, features)
+        
+        outpath1 = f'train_{n_neigh}_{sample_res}'
+        outpath2 = f'test_{n_neigh}_{sample_res}'
+        process_roadmap_neighbors([train_df, test_df], [outpath1, outpath2],
+                                  project_dir, args.tissue)
 
     elif args.split == 'test':
         test_df = load_test_set(args.project,
                                 datasets=['eigen', 'regbase'],
                                 make_new=True)
-        outpath = project_dir / f'test_neighbor_{n_neigh}_{sample_res}'
-        process_roadmap_neighbors(test_df, outpath, features)
+        outpath = f'train_{n_neigh}_{sample_res}'
+        process_roadmap_neighbors([test_df], [outpath], project_dir, args.tissue)
 
 
 if __name__ == '__main__':

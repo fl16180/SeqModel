@@ -77,8 +77,7 @@ def features_to_csv(feature_dir=TMP_DIR):
     """ Post-extraction, combine temporary outputs into a DataFrame and save
     to csv.
     """
-    #features = [x for x in os.listdir(feature_dir) if re.search('E\d{3}$', x)]
-    features = [x for x in os.listdir(feature_dir) if re.search('E116$', x)]
+    features = [x for x in os.listdir(feature_dir) if re.search('E\d{3}$', x)]
 
     cols = []
     for fn in tqdm(features):

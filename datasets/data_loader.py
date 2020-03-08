@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from constants import PROCESSED_DIR
 
 
@@ -46,3 +47,9 @@ def load_test_set(project, datasets=['roadmap', 'eigen', 'regbase'], make_new=Tr
         test.drop_duplicates(['chr', 'pos'], inplace=True)
         test.to_csv(proj_loc / 'matrix_test.csv', index=False)
     return test
+
+
+def load_train_neighbors(project, n_neigh=40, sample_res=25):
+    proj_loc = PROCESSED_DIR / project
+    fname = proj_loc / 'neighbors' / f'train_{n_neigh}_{sample_res}_E116.npy'
+    return np.load(fname)

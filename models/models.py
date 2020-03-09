@@ -22,32 +22,61 @@ class MpraDense(nn.Module):
 
 
 class MpraCNN(nn.Module):
-    def __init__(self, n_input):
+    def __init__(self, nonlin=torch.relu, dropout=0.0):
         super(MpraCNN, self).__init__()
-        self.conv1 = nn.Conv1d(8, 4, kernel_size=5)
+        self.nonlin = nonlin
+        
+        # input (N, 8, 81)
+        self.conv1 = nn.Conv1d(8, 16, kernel_size=4)
+        self.conv2 = nn.Conv1d(16, 16, kernel_size=7)
+
         # self.conv1_drop = nn.Dropout
-        self.dense1 = nn.Linear()
+        self.dense1 = nn.Linear(16 * 16, 100)
+        self.dense2 = nn.Linear(100, 2)
+        self.dropout = nn.Dropout(dropout)
+
+    def forward(self, X, **kwargs):
+        X = self.nonlin(F.avg_pool1d(self.conv1(X), 2))
+        X = self.nonlin(F.avg_pool1d(self.conv2(X), 2))
+
+        X = X.view(-1, X.size(1) * X.size(2))
+
+        X = self.nonlin(self.dense1(X))
+        # X = self.dropout(X)
+        X = F.softmax(self.dense2(X), dim=-1)
+        return X
 
 
-
-
-class Cnn(nn.Module):
-    def __init__(self, dropout=0.5):
-        super(Cnn, self).__init__()
-        self.conv1 = nn.Conv2d(1, 32, kernel_size=3)
-        self.conv2 = nn.Conv2d(32, 64, kernel_size=3)
-        self.conv2_drop = nn.Dropout2d(p=dropout)
-        self.fc1 = nn.Linear(1600, 100) # 1600 = number channels * width * height
-        self.fc2 = nn.Linear(100, 10)
-        self.fc1_drop = nn.Dropout(p=dropout)
-
-    def forward(self, x):
-        x = torch.relu(F.max_pool2d(self.conv1(x), 2))
-        x = torch.relu(F.max_pool2d(self.conv2_drop(self.conv2(x)), 2))
+class MpraFullCNN(nn.Module):
+    def __init__(self, nonlin=torch.relu, dropout=0.0):
+        super(MpraFullCNN, self).__init__()
+        self.nonlin = nonlin
         
-        # flatten over channel, height and width = 1600
-        x = x.view(-1, x.size(1) * x.size(2) * x.size(3))
-        
-        x = torch.relu(self.fc1_drop(self.fc1(x)))
-        x = torch.softmax(self.fc2(x), dim=-1)
-        return x
+        # input (N, 8, 81)
+        self.conv1 = nn.Conv1d(8, 16, kernel_size=4)
+        self.conv2 = nn.Conv1d(16, 16, kernel_size=7)
+
+        self.dense_sc = nn.Linear(1071, 512)
+        self.dense1 = nn.Linear(16 * 16 + 512, 256)
+
+        # self.conv1_drop = nn.Dropout
+        # self.dense1 = nn.Linear(16 * 16 + 1071, 200)
+        self.dense2 = nn.Linear(256, 2)
+        self.dropout = nn.Dropout(dropout)
+
+    def forward(self, X, **kwargs):
+        X_neigh, X_score = X
+
+        # CNN layers on neighbor sequence
+        X_neigh = self.nonlin(F.avg_pool1d(self.conv1(X_neigh), 2))
+        X_neigh = self.nonlin(F.avg_pool1d(self.conv2(X_neigh), 2))
+        X_neigh = X_neigh.view(-1, X_neigh.size(1) * X_neigh.size(2))
+
+        X_score = self.nonlin(self.dense_sc(X_score))
+        X_score = self.dropout(X_score)
+
+        X = torch.cat([X_neigh, X_score], dim=1)
+        X = self.nonlin(self.dense1(X))
+        X = self.dropout(X)
+        X = F.softmax(self.dense2(X), dim=-1)
+        return X

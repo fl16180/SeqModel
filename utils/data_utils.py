@@ -186,7 +186,7 @@ def get_roadmap_col_order(order='tissue'):
         data = load_mpra_data(ROADMAP_COL_ORDER_REF)
         data.drop(['chr', 'pos', 'rs', 'Label'], axis=1, inplace=True)
         return data.columns.tolist()
-    else:
+    elif order == 'marker':
         marks = ROADMAP_MARKERS
         nums = [x for x in range(1, 130) if x not in [60, 64]]
         cols = [x + '-E{:03d}'.format(y) for x in marks for y in nums]

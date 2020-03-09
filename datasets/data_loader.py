@@ -53,3 +53,9 @@ def load_train_neighbors(project, n_neigh=40, sample_res=25):
     proj_loc = PROCESSED_DIR / project
     fname = proj_loc / 'neighbors' / f'train_{n_neigh}_{sample_res}_E116.npy'
     return np.load(fname)
+
+
+def load_test_neighbors(project, n_neigh=40, sample_res=25):
+    proj_loc = PROCESSED_DIR / project
+    fname = proj_loc / 'neighbors' / f'test_{n_neigh}_{sample_res}_E116.npy'
+    return np.load(fname)

@@ -115,37 +115,35 @@ def fit_model(args):
         )
 
     elif args.data == 'neighbor+scores':
+        print('\tLoading neighbors')
         X_neighbor = load_train_neighbors(project).astype(np.float32)
-        # X_neighbor[X_neighbor > 10.] = 10.
-
-        train_df = load_train_set(project, datasets=['roadmap', 'eigen', 'regbase'],
-                                  make_new=False)
+        
+        print('\tLoading scores')
+        train_df = load_train_set(project, datasets=['roadmap', 'eigen', 'regbase'])
         proc = Processor(project)
         train_df = proc.fit_transform(train_df, na_thresh=0.05)
         proc.save(args.data)
 
+        print('\tArranging data')
         rm_cols = [f'{x}-E116' for x in ROADMAP_MARKERS]
-        # rm_cols = get_roadmap_col_order(order='marker')
+        # rm_cols = [x for x in get_roadmap_col_order(order='marker') if 'E116' in x]
         X_score = train_df.drop(['chr', 'pos', 'Label'] + rm_cols, axis=1) \
                           .values \
                           .astype(np.float32)
         y_train = train_df['Label'].values.astype(np.int64)
-        assert X_neighbor.shape[0] == y_train.shape[0]
         X_train = (X_neighbor, X_score)
 
-        # lrs = LRScheduler(policy='StepLR', step_size=5, gamma=0.9)
         net = NeuralNetClassifier(
             models.MpraFullCNN,
 
             batch_size=256,
             optimizer=torch.optim.Adam,
-            optimizer__weight_decay=1e-2,
-            lr=5e-5,
+            optimizer__weight_decay=0,
+            lr=5e-4,
             max_epochs=20,
 
             callbacks=[auc, apr],
-            iterator_train__shuffle=True,
-            train_split=None      
+            iterator_train__shuffle=True          
         )
 
         # import sys; sys.exit()
@@ -165,53 +163,21 @@ def evaluate_model(args):
     project = args.project
     net = load_model(project, args.data)
 
-    if args.data == 'mpra':
-        test_df = load_test_set(project, datasets=['roadmap'])
-        proc = Processor(project)
-        proc.load(args.data)
-        test_df = proc.transform(test_df)
+    X_test = load_test_neighbors(project)
+    X_test = X_test.astype(np.float32)
 
-        X_test = test_df.drop(['chr', 'pos', 'Label'], axis=1) \
-                        .values \
-                        .astype(np.float32)
-        y_test = test_df['Label'].values.astype(np.int64)
+    tmp = load_test_set(project, datasets=['roadmap', 'eigen', 'regbase'])
+    y_test = tmp['Label'].values.astype(np.int64)
 
-    elif args.data == 'mpra+scores':
-        test_df = load_test_set(project, datasets=['roadmap', 'eigen', 'regbase'])
-        proc = Processor(project)
-        proc.load(args.data)
-        test_df = proc.transform(test_df)
+    # test_df = load_test_set(project, datasets=['roadmap', 'eigen', 'roadmap'])
+    # proc = Processor(project)
+    # proc.load(args.data)
+    # test_df = proc.transform(test_df)
 
-        X_test = test_df.drop(['chr', 'pos', 'Label'], axis=1) \
-                        .values \
-                        .astype(np.float32)
-        y_test = test_df['Label'].values.astype(np.int64)
-
-    elif args.data == 'neighbor':
-
-        X_test = load_test_neighbors(project).astype(np.float32)
-
-        tmp = load_test_set(project, datasets=['roadmap', 'eigen', 'regbase'])
-        y_test = tmp['Label'].values.astype(np.int64)
-
-    elif args.data == 'neighbor+scores':
-        X_neighbor = load_test_neighbors(project).astype(np.float32)
-        # X_neighbor[X_neighbor > 10.] = 10.
-
-        test_df = load_test_set(project, datasets=['roadmap', 'eigen', 'regbase'],
-                                  make_new=False)
-        proc = Processor(project)
-        proc.load(args.data)
-        test_df = proc.transform(test_df)
-
-        rm_cols = [f'{x}-E116' for x in ROADMAP_MARKERS]
-        # rm_cols = get_roadmap_col_order(order='marker')
-
-        X_score = test_df.drop(['chr', 'pos', 'Label'] + rm_cols, axis=1) \
-                         .values \
-                         .astype(np.float32)
-        y_test = test_df['Label'].values.astype(np.int64)
-        X_test = (X_neighbor, X_score)
+    # X_test = test_df.drop(['chr', 'pos', 'Label'], axis=1) \
+    #                 .values \
+    #                 .astype(np.float32)
+    # y_test = test_df['Label'].values.astype(np.int64)
 
     class_pred = net.predict(X_test)
     score_pred = net.predict_proba(X_test)

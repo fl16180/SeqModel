@@ -2,14 +2,16 @@
 #
 #SBATCH --partition=qsu
 #SBATCH --nodes=1
-#SBATCH --job-name=preprocess
-#SBATCH --output=res.txt
-#
 #SBATCH --ntasks=1
-#SBATCH --time=10:00:00
-#SBATCH --mem=32G
+#SBATCH --cpus-per-task=8
+#SBATCH --job-name=baseline
+#SBATCH --output=res2.txt
+#
+#SBATCH --time=12:00:00
+#SBATCH --mem=64G
 
 module load python/3.6.1
 source /oak/stanford/groups/zihuai/fredlu/SeqModel/venv/bin/activate
+ml load py-numpy/1.17.2_py36
 cd /oak/stanford/groups/zihuai/fredlu/SeqModel
-python setup_neighbor_data.py -p mpra_e116 -e -npr 40,25
+python evaluate_scores.py -p mpra_e116 -b 2

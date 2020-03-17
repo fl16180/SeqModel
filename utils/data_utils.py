@@ -152,9 +152,9 @@ def clean_eigen_data(filename):
 
     # average over variant substitutions
     eigen = eigen.rename(columns={'chr': 'chr', 'position': 'pos'}) \
-                    .drop('alt', axis=1) \
-                    .groupby(['chr', 'pos', 'ref'], as_index=False) \
-                    .mean()
+                 .drop('alt', axis=1) \
+                 .groupby(['chr', 'pos', 'ref'], as_index=False) \
+                 .mean()
     eigen[['chr', 'pos']] = eigen[['chr', 'pos']].astype(int)
     return eigen
 
@@ -167,9 +167,9 @@ def clean_regbase_data(filename):
 
     # average over variant substitutions
     regbase = regbase.rename(columns={'#Chrom': 'chr', 'Pos_end': 'pos', 'Ref': 'ref'}) \
-                        .drop(['Pos_start', 'Alts'], axis=1) \
-                        .groupby(['chr', 'pos', 'ref'], as_index=False) \
-                        .mean()
+                     .drop(['Pos_start', 'Alts'], axis=1) \
+                     .groupby(['chr', 'pos', 'ref'], as_index=False) \
+                     .mean()
     regbase[['chr', 'pos']] = regbase[['chr', 'pos']].astype(int)
     return regbase
 

@@ -5,7 +5,6 @@ import pandas as pd
 from constants import PROCESSED_DIR, PROJ_CHOICES
 from utils.bed_utils import get_bed_from_mpra, load_bed_file, save_bed_file
 from utils.data_utils import *
-from utils.neighbor_utils import pull_roadmap_with_neighbors, roadmap_neighbors_to_mat
 
 SPLIT_CHOICES = [None, 'train-test', 'test']
 
@@ -98,10 +97,6 @@ if __name__ == '__main__':
                         help='extract regBase data')
     parser.add_argument('--eigen', '-e', default=False, action='store_true',
                         help='extract Eigen data')
-    parser.add_argument('--neighbor', '-n', default=False, action='store_true',
-                        help='extract neighboring Roadmap data')
-    parser.add_argument('--neigh_param', '-npr', default='0,0', type=str,
-                        help='Roadmap neighbor params: (n_neigh,sample_res)')
     parser.add_argument('--split', '-s', default=None, choices=SPLIT_CHOICES,
                         help='split data into train/test sets or just test')
     parser.add_argument('--seed', default=9999, help='train/test random seed')

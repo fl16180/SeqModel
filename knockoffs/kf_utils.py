@@ -7,6 +7,7 @@ from tqdm import tqdm
 import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).absolute().parent.parent))
+from constants import *
 
 
 def _read_bed(x, **kwargs):
@@ -31,7 +32,8 @@ def extract_eigen(bedfile, outpath):
     command = f'tabix {EIGEN_DIR}/{EIGEN_BASE} '
 
     with open(outpath, 'w') as fp:
-        fp.write('\t'.join(header) + '\n')
+        full_header = header + ['pos_end', 'rs']
+        fp.write('\t'.join(full_header) + '\n')
 
         for row in tqdm(bedfile.itertuples()):
             args = f'{row.chr}:{row.pos}-{row.pos_end}'
@@ -41,11 +43,19 @@ def extract_eigen(bedfile, outpath):
             stdout, _ = p.communicate()
 
             if len(stdout) > 0:
-                features = _read_bed(io.StringIO(stdout.decode('utf-8')))
-                print(features)
+                features = _read_bed(io.StringIO(stdout.decode('utf-8')),
+                                     na_values='.')
+                features.columns = header
+                features[['ref', 'alt']] = 0.0
+                
+                pos_mean = features.groupby(['chr', 'position'], as_index=False).mean()
+                reg_mean = pos_mean.groupby('chr', as_index=False).mean()
+                reg_mean['position'] = row.pos
+                reg_mean['pos_end'] = row.pos_end
+                reg_mean['rs'] = row.rs
 
-                features = features.astype(str).values.tolist()
-                for row in features:
+                reg_mean = reg_mean.astype(str).values.tolist()
+                for row in reg_mean:
                     fp.write('\t'.join(row) + '\n')
 
 
@@ -63,7 +73,8 @@ def extract_regbase(bedfile, outpath):
     command = f'tabix {REGBASE_DIR}/{REGBASE} '
 
     with open(outpath, 'w') as fp:
-        fp.write('\t'.join(header) + '\n')
+        full_header = header + ['rs']
+        fp.write('\t'.join(full_header) + '\n')
 
         for row in tqdm(bedfile.itertuples()):
             args = f'{row.chr}:{row.pos}-{row.pos_end}'
@@ -73,7 +84,17 @@ def extract_regbase(bedfile, outpath):
             stdout, _ = p.communicate()
 
             if len(stdout) > 0:
-                features = _read_bed(io.StringIO(stdout.decode('utf-8')))
-                features = features.astype(str).values.tolist()
-                for row in features:
+                features = _read_bed(io.StringIO(stdout.decode('utf-8')),
+                                     na_values='.')
+                features.columns = header
+                features[['Ref', 'Alts']] = 0.0
+
+                pos_mean = features.groupby(['#Chrom', 'Pos_start'], as_index=False).mean()
+                reg_mean = pos_mean.groupby('#Chrom', as_index=False).mean()
+                reg_mean['Pos_start'] = row.pos
+                reg_mean['Pos_end'] = row.pos_end
+                reg_mean['rs'] = row.rs
+
+                reg_mean = reg_mean.astype(str).values.tolist()
+                for row in reg_mean:
                     fp.write('\t'.join(row) + '\n')

@@ -33,7 +33,7 @@ def pull_roadmap_features(bedfile, feature_dir=TMP_DIR):
     # query each feature from bigwig
     for marker in ROADMAP_MARKERS:
         for i in range(1, 130):
-            pull_command(marker, i, TMP_DIR / 'tmp.bed')
+            pull_command(marker, i, feature_dir / 'tmp.bed', feature_dir)
     return True
 
 
@@ -55,7 +55,7 @@ def compile_roadmap_features(bedfile, outpath, col_order,
     compiled.to_csv(outpath, sep='\t', index=False)
 
 
-def pull_command(marker, i, bedfile):
+def pull_command(marker, i, bedfile, feature_dir=TMP_DIR):
     """ Extraction function to query a bedfile against a ROADMAP marker.
 
     Inputs:
@@ -67,7 +67,7 @@ def pull_command(marker, i, bedfile):
     """
     # for example: [...]/E058-DNase.imputed.pval.signal.bigwig
     filestr = ROADMAP_DIR / marker / f'E{i:03d}-{marker}{BIGWIG_TAIL}'
-    output = TMP_DIR / f'{marker}-E{i:03d}'
+    output = feature_dir / f'{marker}-E{i:03d}'
 
     command = f'{BIGWIG_UTIL} {filestr} {bedfile} {output}'
     call(command, shell=True)

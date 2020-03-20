@@ -123,7 +123,8 @@ def extract_regbase(bedfile, outpath):
                     fp.write('\t'.join(row) + '\n')
 
 
-def extract_roadmap(bedfile, outpath, project, get_new=True):
+def extract_roadmap(bedfile, outpath, project,
+                    get_new=True, keep_rs_col=False):
     """ Extract Roadmap data. Currently special cases for each project.
     Some of the MPRA datasets already have Roadmap data. For new data,
     the Roadmap must be extracted and compiled separately.
@@ -139,9 +140,14 @@ def extract_roadmap(bedfile, outpath, project, get_new=True):
         data.to_csv(outpath, sep='\t', index=False)
 
     else:
-        success = pull_roadmap_features(bedfile)
+        loc = os.makedirs(TMP_DIR / project, exist_ok=True)
+        success = pull_roadmap_features(bedfile, feature_dir=loc)
+        success = True
         if success:
-            compile_roadmap_features(bedfile, outpath, col_order)
+            compile_roadmap_features(bedfile, outpath,
+                                     col_order,
+                                     feature_dir=loc,
+                                     keep_rs_col=keep_rs_col)
 
 
 def clean_eigen_data(filename):

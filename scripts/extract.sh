@@ -8,10 +8,10 @@
 #SBATCH --output=out5.txt
 #
 #SBATCH --time=8:00:00
-#SBATCH --mem=20G
+#SBATCH --mem=40G
 
 module load python/3.6.1
 source /oak/stanford/groups/zihuai/fredlu/SeqModel/venv/bin/activate
 ml load py-numpy/1.17.2_py36
 cd /oak/stanford/groups/zihuai/fredlu/SeqModel/knockoffs
-python pull_features.py -b top_P_matched_hg19 -g -rb -e -r -s max -m
+python extract_knockoff_regions.py

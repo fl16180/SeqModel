@@ -14,12 +14,13 @@ GenRange = {1: 248e6, 2: 242e6, 3: 198e6, 4: 190e6,
 }
 
 
-def load_bed_file(project, name=None, chrXX=False):
+def load_bed_file(project, name=None, chrXX=False,
+                  extra_cols=[]):
     if not name:
         name = project
     path = PROCESSED_DIR / f'{project}/{name}.bed'
     bed = pd.read_csv(path, sep='\t', header=None,
-                      names=['chr', 'pos', 'pos_end', 'rs'])
+                      names=['chr', 'pos', 'pos_end', 'rs'] + extra_cols)
     if chrXX:
         re_filt = bed['chr'].str.contains('chr\d{1,2}$')
         bed = bed[re_filt]

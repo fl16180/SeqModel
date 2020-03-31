@@ -38,9 +38,10 @@ def pull_roadmap_features(bedfile, feature_dir=TMP_DIR):
 
 
 def compile_roadmap_features(bedfile, outpath, col_order,
-                             feature_dir=TMP_DIR, keep_rs_col=False):
+                             feature_dir=TMP_DIR, keep_rs_col=False,
+                             summarize='mean'):
     # stack features into dataframe
-    compiled = features_to_csv(feature_dir)
+    compiled = features_to_csv(feature_dir, summarize=summarize)
     compiled = pd.merge(bedfile, compiled, left_on='rs', right_on='variant')
 
     # figure out column ordering
@@ -69,11 +70,11 @@ def pull_command(marker, i, bedfile, feature_dir=TMP_DIR):
     filestr = ROADMAP_DIR / marker / f'E{i:03d}-{marker}{BIGWIG_TAIL}'
     output = feature_dir / f'{marker}-E{i:03d}'
 
-    command = f'{BIGWIG_UTIL} {filestr} {bedfile} {output}'
+    command = f'{BIGWIG_UTIL} -minMax {filestr} {bedfile} {output}'
     call(command, shell=True)
 
 
-def features_to_csv(feature_dir=TMP_DIR):
+def features_to_csv(feature_dir=TMP_DIR, summarize='mean'):
     """ Post-extraction, combine temporary outputs into a DataFrame and save
     to csv.
     """
@@ -81,9 +82,16 @@ def features_to_csv(feature_dir=TMP_DIR):
 
     cols = []
     for fn in tqdm(features):
-        tmp = pd.read_csv(feature_dir / f'{fn}', sep='\t',
-                          names=['variant', 'c1', 'c2', 'v1', 'v2', f'{fn}'])
-        tmp = tmp.drop(['c1','c2','v1','v2'], axis=1)
+        tmp = pd.read_csv(feature_dir / f'{fn}',
+            sep='\t',
+            names=['variant', 'size', 'cov', 'sum', 'mean0', 'mean', 'min', 'max']
+        )
+        if summarize == 'mean':
+            tmp = tmp.drop(['size', 'cov', 'sum', 'mean0', 'min', 'max'], axis=1)
+            tmp = tmp.rename(columns={'mean': fn})
+        elif summarize == 'max':
+            tmp = tmp.drop(['size', 'cov', 'sum', 'mean0', 'mean', 'min'], axis=1)
+            tmp = tmp.rename(columns={'max': fn})
         cols.append(tmp)
 
     df = pd.concat(cols, axis=1)

@@ -6,6 +6,8 @@ EIGEN_DIR = Path('/oak/stanford/groups/zihuai/FST/Score')
 ROADMAP_DIR = Path('/oak/stanford/groups/zihuai/SemiSupervise/bigwig/rollmean')
 BBANK_DIR = HOME_DIR / 'BioBank'
 REGBASE_DIR = HOME_DIR / 'regBase' / 'V1.1'
+GENONET_DIR = Path('/oak/stanford/groups/zihuai/GenoNet/GenoNetScores_byChr')
+
 MPRA_DIR = HOME_DIR / 'MPRA'
 CODE_DIR = HOME_DIR / 'SeqModel'
 PROCESSED_DIR = HOME_DIR / 'processed'
@@ -13,6 +15,7 @@ TMP_DIR = HOME_DIR / 'processed' / 'tmp'
 
 REGBASE = 'regBase_V1.1.gz'
 EIGEN_BASE = 'Eigen_hg19_noncoding_annot_chrXX.tab.bgz'
+GENONET_BASE = 'GenoNet_XX.bed.gz'
 
 MPRA_TABLE = {
     'mpra_e116': ('LabelData_CellPaperE116.txt', 'TestData_MPRA_E116_unbalanced.txt'),

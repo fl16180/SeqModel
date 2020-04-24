@@ -12,7 +12,12 @@ from utils.data_utils import extract_roadmap
 from kf_utils import *
 
 proj_dir = 'knockoffs'
-bedfiles = ['top_W_matched_hg19', 'top_P_matched_hg19']
+bedfiles = ['top_W_matched_hg19_100', 'top_P_matched_hg19_100',
+            'top_W_matched_hg19_200', 'top_P_matched_hg19_200',
+            'top_W_matched_hg19_300', 'top_P_matched_hg19_300',
+            'top_W_matched_hg19_500', 'top_P_matched_hg19_500',
+            'top_W_matched_hg19_1000', 'top_P_matched_hg19_1000',
+            'AD_sig', 'AD_ctrl']
 
 
 def pull_data(args):
@@ -85,6 +90,37 @@ def process_roadmap(version):
     return df
 
 
+def simple_merge_data(args):
+    if not args.simple_merge:
+        return
+
+    rb = process_regbase(args.bed)
+    eg = process_eigen(args.bed)
+    gn = process_genonet(args.bed)
+    ro = process_roadmap(args.bed)
+
+    df = pd.merge(rb, eg, on='variant', suffixes=('', '__y'))
+    assert all(df['pos_start'] == df['pos_start__y'])
+    df.drop(list(df.filter(regex='__y$')), axis=1, inplace=True)
+    print(df.shape)
+
+    df = pd.merge(df, gn, on='variant', suffixes=('', '__y'))
+    assert all(df['pos_start'] == df['pos_start__y'])
+    df.drop(list(df.filter(regex='__y$')), axis=1, inplace=True)
+    print(df.shape)
+
+    df = pd.merge(df, ro, on='variant', suffixes=('', '__y'))
+    assert all(df['pos_start'] == df['pos_start__y'])
+    df.drop(list(df.filter(regex='__y$')), axis=1, inplace=True)
+    print(df.shape)
+    
+    preds = [x for x in df.columns if x not in ['chr', 'pos_start', 'pos_end', 'variant']]
+    df = df.loc[:, ['chr', 'pos_start', 'pos_end', 'variant'] + preds]
+
+    df = df.rename(columns={'pos_start': 'pos_start_hg19', 'pos_end': 'pos_end_hg19'})
+    df.to_csv(PROCESSED_DIR / proj_dir / f'all_{args.stat}_{args.bed}.tsv', sep='\t', index=False)
+
+
 def merge_data(args):
     if not args.merge:
         return
@@ -121,7 +157,7 @@ def merge_data(args):
     
     preds = [x for x in df.columns if x not in ['chr', 'pos_start', 'pos_end', 'label', 'variant']]
     
-    hg38_bed = args.bed.split('_hg19')[0]
+    hg38_bed = args.bed.replace('_hg19', '')
     ref = load_bed_file(proj_dir, hg38_bed, chrXX=True,
                         extra_cols=['W_KS', 'P_KS'])
     ref = ref.rename(columns={'pos': 'pos_start_hg38',
@@ -141,7 +177,7 @@ def merge_data(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--bed', '-b', required=True, choices=bedfiles,
+    parser.add_argument('--bed', '-b', required=True, type=str, choices=bedfiles,
                         help='bedfile to extract')
     parser.add_argument('--genonet', '-g', default=False, action='store_true',
                         help='extract GenoNet data')
@@ -155,7 +191,10 @@ if __name__ == '__main__':
                         help='summary statistic (mean or max) to extract')
     parser.add_argument('--merge', '-m', default=False, action='store_true',
                         help='merge datasets together after extraction')
+    parser.add_argument('--simple_merge', '-sm', default=False, action='store_true',
+                        help='merge datasets without extra label/variant processing')
     args = parser.parse_args()
 
     pull_data(args)
+    simple_merge_data(args)
     merge_data(args)

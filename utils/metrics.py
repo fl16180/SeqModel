@@ -1,8 +1,10 @@
 import numpy as np
+import pandas as pd
 from sklearn.metrics import roc_auc_score
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import f1_score
 from sklearn.metrics import average_precision_score
+from sklearn.metrics import precision_recall_curve
 
 
 def metric_report(truth, predictions):
@@ -27,12 +29,13 @@ def metric_report(truth, predictions):
 
     return tn, fp, fn, tp, f1
 
-from sklearn.metrics import precision_recall_curve
 
 def show_prec_recall(y_true, probs):
-    prec, rec, thresh = precision_recall_curve(y_test, probs[:, 1])
+    prec, rec, thresh = precision_recall_curve(y_true, probs)
     pr_df = pd.DataFrame({'precision': prec, 'recall': rec, 'threshold': np.append(0, thresh)})
+    pr_df['n_above_threshold'] = pr_df['threshold'].map(lambda x: np.sum(probs > x))
     return pr_df
+
 
 def pr_summary(y_true, probs, precs=[0.98, 0.95, 0.9, 0.85, 0.8, 0.75]):
     pr_df = show_prec_recall(y_true, probs)
@@ -45,5 +48,5 @@ def pr_summary(y_true, probs, precs=[0.98, 0.95, 0.9, 0.85, 0.8, 0.75]):
 
         row['prec >= xx'] = thr
         out = pd.concat([out, row])
-    out = out.loc[:, ['prec >= xx', 'recall', 'precision', 'threshold']]
+    out = out.loc[:, ['prec >= xx', 'recall', 'precision', 'threshold', 'n_above_threshold']]
     return out

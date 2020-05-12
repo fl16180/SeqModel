@@ -141,9 +141,7 @@ def extract_roadmap(bedfile, outpath, project,
 
     else:
         loc = TMP_DIR / project
-        os.makedirs(loc, exist_ok=True)
         success = pull_roadmap_features(bedfile, feature_dir=loc)
-        success = True
         if success:
             compile_roadmap_features(bedfile, outpath,
                                      col_order,

@@ -21,7 +21,7 @@ MPRA_TABLE = {
     'mpra_e116': ('LabelData_CellPaperE116.txt', 'TestData_MPRA_E116_unbalanced.txt'),
     'mpra_e118': ('LabelData_KellisE118.txt', 'TestData_MPRA_E118.txt'),
     'mpra_e123': ('LabelData_KellisE123.txt', 'TestData_MPRA_E123.txt'),
-    'mpra_nova': ('1KG_bartender_novaSeq_DESeq2_pvals.txt', '')
+    'mpra_nova': ('1KG_bartender_novaSeq_DESeq2-LoveInteract-sumstats.txt', '')
 }
 
 # project choices for all argparsers
@@ -36,4 +36,5 @@ ROADMAP_MARKERS = ['DNase', 'H3K27ac', 'H3K27me3', 'H3K36me3',
                    'H3K4me1', 'H3K4me3', 'H3K9ac', 'H3K9me3']
 ROADMAP_COL_ORDER_REF = 'mpra_e116'
 
-# consider clipping inputs? most roadmap < 0.5, but 2% above 10, top value over 100
+N_NEIGH = 40
+SAMPLE_RES = 25

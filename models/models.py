@@ -65,7 +65,7 @@ class MpraFullCNN(nn.Module):
         self.dropout = nn.Dropout(dropout)
 
     def forward(self, X, **kwargs):
-        X_neigh, X_score = X
+        X_neigh, X_score = self.reshape_conv(X)
 
         # CNN layers on neighbor sequence
         X_neigh = self.nonlin(F.avg_pool1d(self.conv1(X_neigh), 2))
@@ -80,3 +80,8 @@ class MpraFullCNN(nn.Module):
         X = self.dropout(X)
         X = F.softmax(self.dense2(X), dim=-1)
         return X
+
+    def reshape_conv(self, X):
+        X_score = X[:, :1071]
+        X_neigh = X[:, 1071:].reshape(X.shape[0], 8, 81)
+        return X_neigh, X_score

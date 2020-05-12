@@ -6,7 +6,9 @@ from constants import PROCESSED_DIR, PROJ_CHOICES
 from utils.bed_utils import get_bed_from_mpra, load_bed_file, save_bed_file
 from utils.data_utils import *
 
-SPLIT_CHOICES = [None, 'train-test', 'test']
+
+PROJ_CHOICES = ['mpra_e116', 'mpra_e118', 'mpra_e123', 'mpra_nova']
+SPLIT_CHOICES = [None, 'train-test', 'all']
 
 
 def setup(args):
@@ -27,17 +29,17 @@ def setup(args):
     if args.roadmap:
         print('Extracting Roadmap: ')
         fname = project_dir / 'roadmap_extract.tsv'
-        extract_roadmap(bedfile, fname, args.project)
+        extract_roadmap(bedfile.copy(), fname, args.project)
 
     if args.regbase:
         print('Extracting regBase: ')
         fname = project_dir / 'regBase_extract.tsv'
-        extract_regbase(bedfile, fname)
+        extract_regbase(bedfile.copy(), fname)
 
     if args.eigen:
         print('Extracting Eigen: ')
         fname = project_dir / 'eigen_extract.tsv'
-        extract_eigen(bedfile, fname)
+        extract_eigen(bedfile.copy(), fname)
 
 
     # further process data and split into train/test sets
@@ -49,19 +51,18 @@ def setup(args):
         process_datasets(args, bed_train, split='train')
         process_datasets(args, bed_test, split='test')
 
-    elif args.split == 'test':
-        process_datasets(args, bedfile, split='test')
+    elif args.split == 'all':
+        process_datasets(args, bedfile, split='all')
 
 
-def process_datasets(args, bedfile, split='test'):
+def process_datasets(args, bedfile, split='all'):
 
     print(f'Processing {split} set')
     project_dir = PROCESSED_DIR / args.project
     mpra = load_mpra_data(args.project)
 
     if args.project == 'mpra_nova':
-        # mpra['Label'] = mpra['pvalue_expr'].apply(lambda x: x < 1e-5).astype(int)
-        mpra['Label'] = mpra['pvalue_expr']
+        mpra['Label'] = mpra['Hit']
 
     y_split = pd.merge(bedfile, mpra, on=['chr', 'pos']).loc[:, ['chr', 'pos', 'Label']]
     y_split.to_csv(project_dir / f'{split}_label.csv', sep=',', index=False)
@@ -69,6 +70,7 @@ def process_datasets(args, bedfile, split='test'):
     if os.path.exists(project_dir / 'roadmap_extract.tsv'):
         print('\tRoadmap')
         roadmap = pd.read_csv(project_dir / 'roadmap_extract.tsv', sep='\t')
+        roadmap['chr'] = roadmap['chr'].map(lambda x: x[3:])
         roadmap[['chr', 'pos']] = roadmap[['chr', 'pos']].astype(int)
         r_split = pd.merge(bedfile[['chr', 'pos']], roadmap, on=['chr', 'pos'])
         r_split.to_csv(project_dir / f'{split}_roadmap.csv', sep=',', index=False)
@@ -98,7 +100,7 @@ if __name__ == '__main__':
     parser.add_argument('--eigen', '-e', default=False, action='store_true',
                         help='extract Eigen data')
     parser.add_argument('--split', '-s', default=None, choices=SPLIT_CHOICES,
-                        help='split data into train/test sets or just test')
+                        help='split data into train/test sets or all')
     parser.add_argument('--seed', default=9999, help='train/test random seed')
     args = parser.parse_args()
 

@@ -8,6 +8,7 @@ import pandas as pd
 from tqdm import tqdm
 import re
 import numpy as np
+from joblib import Parallel, delayed
 
 import dask
 from dask import delayed
@@ -19,6 +20,9 @@ from constants import *
 def pull_roadmap_features(bedfile, feature_dir=TMP_DIR):
     """ For each ROADMAP marker, execute bigwig pulls for each tissue
     """
+    # make tmp directory if not present
+    os.makedirs(feature_dir, exist_ok=True)
+
     # clear tmp directory
     for f in os.listdir(feature_dir):
         try:
@@ -35,6 +39,15 @@ def pull_roadmap_features(bedfile, feature_dir=TMP_DIR):
         for i in range(1, 130):
             pull_command(marker, i, feature_dir / 'tmp.bed', feature_dir)
     return True
+
+    # for marker in ROADMAP_MARKERS:
+    #     Parallel(n_jobs=-1)(
+    #         delayed(pull_command)(marker,
+    #                               i,
+    #                               feature_dir / 'tmp.bed',
+    #                               feature_dir)
+    #         for i in tqdm(range(1, 130))
+    #     )
 
 
 def compile_roadmap_features(bedfile, outpath, col_order,

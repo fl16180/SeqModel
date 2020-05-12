@@ -22,9 +22,13 @@ def reshape_roadmap_files(feature_dir=TMP_DIR):
         os.mkdir(feature_dir / 'reshape')
     
     def process_feature_file(feature_dir, feat):
-        tmp = pd.read_csv(feature_dir / feat, sep='\t',
-                          names=['variant', 'c1', 'c2', 'v1', 'v2', feat])
-        tmp.drop(['c1', 'c2', 'v1', 'v2'], axis=1, inplace=True)
+        tmp = pd.read_csv(
+            feature_dir / feat,
+            sep='\t',
+            names=['variant', 'size', 'cov', 'sum', 'mean0', 'mean', 'min', 'max'])
+
+        tmp.drop(['size', 'cov', 'sum', 'mean0', 'min', 'max'], axis=1, inplace=True)
+        tmp = tmp.rename(columns={'mean': feat})
 
         tmp[['chr-pos', 'neighbor']] = tmp['variant'].str.split(';', n=1, expand=True)
         tmp['neighbor'] = tmp['neighbor'].astype(int)
@@ -34,7 +38,7 @@ def reshape_roadmap_files(feature_dir=TMP_DIR):
 
     features = [x for x in os.listdir(feature_dir) if re.search('E\d{3}$', x)]
 
-    Parallel(n_jobs=-2)(delayed(process_feature_file)(feature_dir, f) for f in tqdm(features))
+    Parallel(n_jobs=-1)(delayed(process_feature_file)(feature_dir, f) for f in tqdm(features))
 
 
 def add_bed_neighbors(bed, n_neighbor=40, sample_res=25):
@@ -109,12 +113,11 @@ def process_roadmap_neighbors(ref_dfs, splits, project_dir,
                            for x in range(1, 130)
                            if x not in [60, 64]]
 
-        Parallel(n_jobs=-2)(
+        Parallel(n_jobs=-1)(
             delayed(process_batch)(feats, ref_dfs, ident=r)
             for r, feats in features.items()
         )
 
-        # [process_batch(feats, ref_dfs, ident=r) for r, feats in features.items()]
     else:
         features = [f'{x}-{tissue}' for x in ROADMAP_MARKERS]
         process_batch(features, ref_dfs, ident=tissue)

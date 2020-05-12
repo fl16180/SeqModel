@@ -1,12 +1,12 @@
 import argparse
 
-from constants import PROCESSED_DIR, PROJ_CHOICES
+from constants import PROCESSED_DIR, PROJ_CHOICES, TMP_DIR
 from utils.bed_utils import load_bed_file
 from utils.bigwig_utils import pull_roadmap_features
 from utils.neighbor_utils import reshape_roadmap_files, add_bed_neighbors, process_roadmap_neighbors
 from datasets.data_loader import *
 
-SPLIT_CHOICES = [None, 'train-test', 'test']
+SPLIT_CHOICES = [None, 'train-test', 'all']
 
 
 def setup(args):
@@ -21,19 +21,18 @@ def setup(args):
 
     # extract roadmap data from bigwig files
     if args.extract:
-        neighbor_bed = add_bed_neighbors(bedfile, n_neigh, sample_res)
-        pull_roadmap_features(neighbor_bed)
-        reshape_roadmap_files()
+        # neighbor_bed = add_bed_neighbors(bedfile, n_neigh, sample_res)
+        loc = TMP_DIR / f'{args.project}_neighbor'
+        # pull_roadmap_features(neighbor_bed, feature_dir=loc)
+        reshape_roadmap_files(feature_dir=loc)
 
     # prepare roadmap data into train and test sets corresponding to train/test
     # dataframes generated from other datasets
     if args.split == 'train-test':
-        train_df = load_train_set(args.project,
-                                  datasets=['eigen', 'regbase'],
-                                  make_new=True)
+        train_df = load_data_set(args.project, split='train',
+                                 make_new=True)
 
-        test_df = load_test_set(args.project,
-                                datasets=['eigen', 'regbase'],
+        test_df = load_data_set(args.project, split='test',
                                 make_new=True)
         
         outpath1 = f'train_{n_neigh}_{sample_res}'
@@ -41,11 +40,11 @@ def setup(args):
         process_roadmap_neighbors([train_df, test_df], [outpath1, outpath2],
                                   project_dir, args.tissue)
 
-    elif args.split == 'test':
-        test_df = load_test_set(args.project,
-                                datasets=['eigen', 'regbase'],
+    elif args.split == 'all':
+        test_df = load_data_set(args.project, split='all',
                                 make_new=True)
-        outpath = f'train_{n_neigh}_{sample_res}'
+
+        outpath = f'all_{n_neigh}_{sample_res}'
         process_roadmap_neighbors([test_df], [outpath], project_dir, args.tissue)
 
 
@@ -57,7 +56,7 @@ if __name__ == '__main__':
     parser.add_argument('--tissue', '-t', default='all', type=str,
                         help='get neighbor data for specific tissue e.g. E116')
     parser.add_argument('--split', '-s', default=None, choices=SPLIT_CHOICES,
-                        help='split data into train/test sets or just test')
+                        help='split data into train/test sets or all')
     parser.add_argument('--neighbor_param', '-npr', default='0,0', type=str,
                         help='Roadmap neighbor params: (n_neigh,sample_res)')
     args = parser.parse_args()

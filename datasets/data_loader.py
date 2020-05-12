@@ -3,59 +3,37 @@ import numpy as np
 from constants import PROCESSED_DIR
 
 
-def load_train_set(project, datasets=['roadmap', 'eigen', 'regbase'], make_new=True):
+def load_data_set(project, split='all',
+                  datasets=['roadmap', 'eigen', 'regbase'],
+                  make_new=True):
+    ''' Combines processed data sources to a compiled matrix.
+    split: ('train', 'test', 'all') matching the saved label names
+    '''
     proj_loc = PROCESSED_DIR / project
 
     try:
         if make_new:
-            raise Exception('Compiling train matrix.')
-        train = pd.read_csv(proj_loc / f'matrix_train.csv')
+            raise Exception(f'Compiling {split} matrix.')
+        dat = pd.read_csv(proj_loc / f'matrix_{split}.csv')
 
     except Exception as e:
-        train = pd.read_csv(proj_loc / 'train_label.csv')
+        dat = pd.read_csv(proj_loc / f'{split}_label.csv')
 
         for ds in datasets:
-            df = pd.read_csv(proj_loc / f'train_{ds}.csv')
+            df = pd.read_csv(proj_loc / f'{split}_{ds}.csv')
             if 'ref' in df.columns:
                 df.drop('ref', axis=1, inplace=True)
-            train = pd.merge(train, df, on=['chr', 'pos'], suffixes=('', '__y'))
-            train.drop(list(train.filter(regex='__y$')), axis=1, inplace=True)
+            dat = pd.merge(dat, df,
+                           on=['chr', 'pos'], suffixes=('', '__y'))
+            dat.drop(list(dat.filter(regex='__y$')), axis=1, inplace=True)
         
-        train.drop_duplicates(['chr', 'pos'], inplace=True)
-        train.to_csv(proj_loc / 'matrix_train.csv', index=False)
-    return train
+        dat.drop_duplicates(['chr', 'pos'], inplace=True)
+        dat.to_csv(proj_loc / f'matrix_{split}.csv', index=False)
+    return dat
 
 
-def load_test_set(project, datasets=['roadmap', 'eigen', 'regbase'], make_new=True):
-    proj_loc = PROCESSED_DIR / project
-
-    try:
-        if make_new:
-            raise Exception('Compiling test matrix.')
-        test = pd.read_csv(proj_loc / f'matrix_test.csv')
-
-    except Exception as e:
-        test = pd.read_csv(proj_loc / 'test_label.csv')
-
-        for ds in datasets:
-            df = pd.read_csv(proj_loc / f'test_{ds}.csv')
-            if 'ref' in df.columns:
-                df.drop('ref', axis=1, inplace=True)
-            test = pd.merge(test, df, on=['chr', 'pos'], suffixes=('', '__y'))
-            test.drop(list(test.filter(regex='__y$')), axis=1, inplace=True)
-
-        test.drop_duplicates(['chr', 'pos'], inplace=True)
-        test.to_csv(proj_loc / 'matrix_test.csv', index=False)
-    return test
-
-
-def load_train_neighbors(project, n_neigh=40, sample_res=25):
-    proj_loc = PROCESSED_DIR / project
-    fname = proj_loc / 'neighbors' / f'train_{n_neigh}_{sample_res}_E116.npy'
-    return np.load(fname)
-
-
-def load_test_neighbors(project, n_neigh=40, sample_res=25):
-    proj_loc = PROCESSED_DIR / project
-    fname = proj_loc / 'neighbors' / f'test_{n_neigh}_{sample_res}_E116.npy'
+def load_neighbors_set(project, split='all',
+                       n_neigh=40, sample_res=25, tissue='E116'):
+    proj_loc = PROCESSED_DIR / project / 'neighbors'
+    fname = proj_loc / f'{split}_{n_neigh}_{sample_res}_E116.npy'
     return np.load(fname)
